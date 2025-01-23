@@ -5,9 +5,10 @@ import com.bricklytics.pokesphere.datalayer.base.BaseApiDataSource
 import com.bricklytics.pokesphere.datalayer.base.error.ErrorDetailDTO
 import com.bricklytics.pokesphere.datalayer.features.ability.model.AbilityDTO
 import com.bricklytics.pokesphere.domainlayer.base.error.wrapper.ResultWrapper
+import javax.inject.Inject
 
 @WorkerThread
-class AbilityApiDataSource(
+class AbilityApiDataSource @Inject constructor (
     private val abilityApi: AbilityAPI,
 ) : BaseApiDataSource() {
 

@@ -9,7 +9,7 @@ import com.bricklytics.pokesphere.domainlayer.base.error.wrapper.ResultWrapper
 import javax.inject.Inject
 
 @WorkerThread
-class PokemonApiDataSource @Inject constructor(
+class PokemonApiDataSource @Inject constructor (
     private val pokemonAPI: PokemonAPI,
 ): BaseApiDataSource() {
 
