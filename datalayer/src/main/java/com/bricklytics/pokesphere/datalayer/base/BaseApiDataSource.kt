@@ -9,11 +9,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 
-abstract class BaseApiDataSource {
+abstract class BaseApiDataSource(
     @AppDispatcher(AppDispatchers.IO)
     val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
-
-    protected suspend inline fun <SUCCESS, reified ERROR> safeApiCall(
+) {
+    protected suspend inline fun <SUCCESS: Any, reified ERROR: Any> safeApiCall(
         apiCall: () -> Response<SUCCESS>
     ): ResultWrapper<SUCCESS, ERROR> {
 
