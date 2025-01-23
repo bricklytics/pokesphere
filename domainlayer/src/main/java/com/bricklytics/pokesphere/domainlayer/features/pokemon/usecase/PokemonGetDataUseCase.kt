@@ -1,7 +1,5 @@
 package com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase
 
-import com.bricklytics.pokesphere.domainlayer.base.error.Failure
-import com.bricklytics.pokesphere.domainlayer.base.error.FailureFactory
 import com.bricklytics.pokesphere.domainlayer.base.error.model.ErrorDetailModel
 import com.bricklytics.pokesphere.domainlayer.base.error.wrapper.ResultWrapper
 import com.bricklytics.pokesphere.domainlayer.base.usecase.BaseUseCase
@@ -17,27 +15,41 @@ class PokemonGetDataUseCase @Inject constructor(
         args: Map<String, Any>
     ): ResultWrapper<PokemonModel, PokemonGetDataFailureFactory<ErrorDetailModel>> {
         return runAsync {
-            if(args.isEmpty()) {
-                return@runAsync ResultWrapper.createError(
+            if (args.isEmpty()) {
+                return@runAsync ResultWrapper.Error(
                     PokemonGetDataFailureFactory.EmptyParamsFailure()
                 )
             }
             repository.getPokemon(
                 name = args["name"] as String
-            ).transformError { PokemonGetDataFailureFactory() }
+            ).transformError {
+                PokemonGetDataFailureFactory<ErrorDetailModel>().createFailure(it)
+            }
         }
     }
 }
 
-open class PokemonGetDataFailureFactory<ERROR_DATA> : FailureFactory<ERROR_DATA>() {
+open class PokemonGetDataFailureFactory<E> {
 
-    class EmptyParamsFailure<ERROR_DATA> : PokemonGetDataFailureFactory<ERROR_DATA>()
-    class GenericFailure<ERROR_DATA> : PokemonGetDataFailureFactory<ERROR_DATA>()
+    class GenericFailure<E>(val body: E) : PokemonGetDataFailureFactory<E>()
+    class EmptyParamsFailure<E> : PokemonGetDataFailureFactory<E>()
 
-    override fun getFailure(code: Int): Failure<ERROR_DATA> {
-        return when(code) {
-            0 -> return GenericFailure()
-            else -> GenericFailure()
+    fun createFailure(errorData: E): PokemonGetDataFailureFactory<E> {
+        return if (errorData is ErrorDetailModel) {
+            translate(errorData)
+        } else {
+            GenericFailure(errorData)
+        }
+    }
+
+    private fun <T> translate(
+        errorData: T
+    ): PokemonGetDataFailureFactory<T> {
+        val code = (errorData as ErrorDetailModel).code
+        return when (code) {
+            0 -> GenericFailure(errorData)
+            else -> GenericFailure(errorData)
         }
     }
 }
+
