@@ -61,6 +61,9 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.serialization)
     implementation(libs.ktor.serialization.json)
+    implementation(libs.ktor.logging)
+    implementation(libs.ktor.cio)
+    implementation(libs.ktor.okhttp)
 
     // Timber for logging
     implementation(libs.timber)
