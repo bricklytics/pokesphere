@@ -21,6 +21,12 @@ android {
     }
 
     buildTypes {
+        debug {
+            applicationIdSuffix = ".debug"
+            isDebuggable = true
+            isMinifyEnabled = false
+            isShrinkResources = false
+        }
         release {
             isMinifyEnabled = false
             proguardFiles(
@@ -37,11 +43,6 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.kotlin.get()
     }
-
-//    compileOptions {
-//        sourceCompatibility = JavaVersion.VERSION_17
-//        targetCompatibility = JavaVersion.VERSION_17
-//    }
 }
 
 dependencies {
