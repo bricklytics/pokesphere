@@ -3,7 +3,7 @@ package com.bricklytics.pokesphere.datalayer.network.provider
 import com.bricklytics.pokesphere.datalayer.BuildConfig.BASE_URL
 import com.bricklytics.pokesphere.datalayer.base.BaseApiServicesFacade
 import com.bricklytics.pokesphere.datalayer.network.error.NetworkErrorHandler
-import com.bricklytics.pokesphere.datalayer.network.interceptor.BaseNetworkHttpInterceptor
+import com.bricklytics.pokesphere.datalayer.network.interceptor.BaseHttpInterceptor
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.DefaultRequest
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 object KtorProvider : BaseApiServicesFacade<HttpClient> {
 
     private val errorHandler = NetworkErrorHandler()
-    private val interceptor = BaseNetworkHttpInterceptor(errorHandler)
+    private val interceptor = BaseHttpInterceptor(errorHandler)
 
     override fun provideApiService(): HttpClient = HttpClient(OkHttp) {
         expectSuccess = true
