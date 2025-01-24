@@ -32,6 +32,7 @@ class PokemonGetDataUseCase @Inject constructor(
 open class PokemonGetDataFailureFactory<E> {
 
     class GenericFailure<E>(val body: E) : PokemonGetDataFailureFactory<E>()
+    class BaseFailure<E>(val code: Int) : PokemonGetDataFailureFactory<E>()
     class EmptyParamsFailure<E> : PokemonGetDataFailureFactory<E>()
 
     fun createFailure(errorData: E): PokemonGetDataFailureFactory<E> {
@@ -47,7 +48,7 @@ open class PokemonGetDataFailureFactory<E> {
     ): PokemonGetDataFailureFactory<T> {
         val code = (errorData as ErrorDetailModel).code
         return when (code) {
-            0 -> GenericFailure(errorData)
+            in 400..599 -> BaseFailure(errorData.code)
             else -> GenericFailure(errorData)
         }
     }
