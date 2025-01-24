@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppNavGraph
-import com.bricklytics.pokesphere.uilayer.ui.theme.PokesphereappTheme
+import com.bricklytics.pokesphere.uilayer.components.ui.theme.PokesphereappTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

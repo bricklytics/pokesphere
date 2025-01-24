@@ -1,4 +1,4 @@
-package com.bricklytics.pokesphere.uilayer.ui.theme
+package com.bricklytics.pokesphere.uilayer.components.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
