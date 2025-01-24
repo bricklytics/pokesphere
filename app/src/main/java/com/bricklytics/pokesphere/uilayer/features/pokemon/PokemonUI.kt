@@ -13,12 +13,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
+import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.BottomSheet
+import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.ButtonOrientation
+import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonEvent
 
 @Composable
 fun PokemonUI(navController: NavController, viewModel: PokemonViewModel) {
@@ -58,6 +60,16 @@ fun PokemonUI(navController: NavController, viewModel: PokemonViewModel) {
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.padding(it)
             ) {
+                viewModel.bottomSheetUiState.let { bottomSheet ->
+                    BottomSheet (
+                        visible = bottomSheet.enabled,
+                        model = bottomSheet.model,
+                        buttonOrientaion = ButtonOrientation.Vertical,
+                        primaryAction = "OK" to { viewModel.onEvent(PokemonEvent.OnDismissBottomSheet) },
+                        onDismiss = { viewModel.onEvent(PokemonEvent.OnDismissBottomSheet) }
+                    )
+                }
+
                 Text(
                     modifier = Modifier
                         .padding(16.dp)
