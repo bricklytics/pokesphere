@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">pokesphere-app</string>
+
+    <!-- PokemonUI -->
+    <string name="pokemon_bottom_sheet_title">Ooops!</string>
+    <string name="pokemon_bottom_sheet_subtitle">Looks like something went wrong…</string>
+    <string name="pokemon_bottom_sheet_description">Wait a little and try again, right!?</string>
+
 </resources>

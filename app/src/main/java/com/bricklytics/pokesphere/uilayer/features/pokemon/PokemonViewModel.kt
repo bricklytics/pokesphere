@@ -10,6 +10,8 @@ import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
 import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataFailureFactory
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataUseCase
+import com.bricklytics.pokesphere.uilayer.R
+import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetType
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetUIState
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonEvent
@@ -27,7 +29,8 @@ class PokemonViewModel @AssistedInject constructor(
     private val name: String,
     private val getPokemonData: PokemonGetDataUseCase,
     @AppDispatcher(AppDispatchers.IO)
-    private val dispatcher: CoroutineDispatcher
+    private val dispatcher: CoroutineDispatcher,
+    private val resources: ResourcesProvider
 ) : ViewModel() {
 
     var uiState by mutableStateOf(PokemonUIState())
@@ -53,10 +56,10 @@ class PokemonViewModel @AssistedInject constructor(
                         bottomSheetUiState = bottomSheetUiState.copy(
                             enabled = true,
                             model = BottomSheetModel(
-                                title = "Ooops!",
-                                subTitle = "Looks like something went wrong!",
+                                title = resources.getString(R.string.pokemon_bottom_sheet_title),
+                                subTitle = resources.getString(R.string.pokemon_bottom_sheet_subtitle),
                                 footer = error.code.toString(),
-                                message = "Wait a little and try again, rigth!?",
+                                message = resources.getString(R.string.pokemon_bottom_sheet_description),
                             ),
                             errorType = BottomSheetType.Error
                         )
