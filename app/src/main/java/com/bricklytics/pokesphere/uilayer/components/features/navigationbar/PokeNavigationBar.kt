@@ -1,8 +1,9 @@
 package com.bricklytics.pokesphere.uilayer.components.features.navigationbar
 
-import android.app.Activity
 import android.os.Build
 import android.view.View
+import android.view.Window
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -53,6 +54,7 @@ private fun NavigationBarPreview() {
                 PokeNavigationBar(
                     title = "Title",
                     icon = null,
+                    color = Color.Yellow,
                     onClickIcon = { },
                     onClickToolbar = { }
                 )
@@ -79,8 +81,11 @@ fun PokeNavigationBar(
     val view = LocalView.current
     val density = LocalDensity.current
 
-    val bestColor = getContrastingColor(color.toArgb())
-    setStatusBarColors(view, color, bestColor != Color.White)
+    val contrastColor = getContrastingColor(color.toArgb())
+
+    LocalActivity.current?.let {
+        setStatusBarColors(view, it.window, color, contrastColor != Color.White)
+    }
 
     Column(Modifier.background(color = color)) {
         if (hasEdgeToEdgeSupport()) {
@@ -110,7 +115,7 @@ fun PokeNavigationBar(
                         modifier = Modifier.size(32.dp),
                         imageVector = Icons.AutoMirrored.Default.ArrowBack,
                         contentDescription = null,
-                        tint = bestColor
+                        tint = contrastColor
                     )
                 }
             }
@@ -118,7 +123,7 @@ fun PokeNavigationBar(
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = title,
-                color = bestColor
+                color = contrastColor
             )
         }
     }
@@ -142,15 +147,18 @@ private fun getStatusBarHeight(view: View, density: Density): Dp {
 }
 
 @Suppress("DEPRECATION")
-private fun setStatusBarColors(view: View, color: Color, isDark: Boolean) {
-    val window = (view.context as Activity).window
-
+private fun setStatusBarColors(
+    view: View,
+    window: Window,
+    color: Color,
+    isDark: Boolean
+) {
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
         window.statusBarColor = color.toArgb()
         window.decorView.isForceDarkAllowed = !isDark
 
         if (!view.isInEditMode) {
-            window?.let {
+            window.let {
                 WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = isDark
                 view.systemUiVisibility = if (isDark) {
                     view.systemUiVisibility xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
