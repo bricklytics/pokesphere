@@ -1,8 +1,6 @@
 package com.bricklytics.pokesphere.uilayer.di
 
-import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataUseCase
 import com.bricklytics.pokesphere.uilayer.features.home.HomeViewModel
-import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
