@@ -2,18 +2,13 @@ package com.bricklytics.pokesphere.uilayer.features.pokemon
 
 import android.content.Context
 import android.graphics.Bitmap
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,14 +16,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.palette.graphics.Palette
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.model.PokemonModel
@@ -39,12 +30,9 @@ import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.Button
 import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCard
 import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCardSkeleton
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeTopBar
-import com.bricklytics.pokesphere.uilayer.components.fonts.psFontFamily
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonEvent
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonUIState
 import com.bumptech.glide.Glide
-import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
-import com.bumptech.glide.integration.compose.GlideImage
 
 @Composable
 fun PokemonUI(navController: NavController, viewModel: PokemonViewModel) {
@@ -121,33 +109,6 @@ fun PokemonGridList(
                 imgUrl = uiState.pokemonList[index].officialArtworkModel.frontDefault,
                 onClick = {}
             )
-//
-//            @OptIn(ExperimentalGlideComposeApi::class)
-//            Card(
-//                shape = RoundedCornerShape(8.dp),
-//                border = BorderStroke(2.dp, Color.White),
-//                modifier = Modifier
-//                    .background(Color.LightGray)
-//                    .padding(8.dp)
-//            ) {
-//                val list = uiState.pokemonList
-//                GlideImage(
-//                    model = list[index].officialArtworkModel.frontDefault,
-//                    contentDescription = null,
-//                    modifier = Modifier
-//                        .padding(4.dp)
-//                        .align(Alignment.CenterHorizontally),
-//                )
-//                Text(
-//                    text = list[index].name,
-//                    fontSize = 16.sp,
-//                    fontWeight = FontWeight.Normal,
-//                    fontFamily = psFontFamily,
-//                    modifier = Modifier
-//                        .padding(horizontal = 4.dp, vertical = 8.dp)
-//                        .align(Alignment.CenterHorizontally)
-//                )
-//            }
         }
     }
 }
