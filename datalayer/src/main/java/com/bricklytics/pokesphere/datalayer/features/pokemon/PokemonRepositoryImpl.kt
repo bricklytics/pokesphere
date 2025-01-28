@@ -18,8 +18,10 @@ class PokemonRepositoryImpl @Inject constructor(
             .transformError { it.mapTo() }
     }
 
-    override suspend fun getPokemonList(): ResultWrapper<PokemonsModel, ErrorDetailModel> {
-        return pokemonApiDataSource.getPokemonList()
+    override suspend fun getPokemonList(
+        page: Int
+    ): ResultWrapper<PokemonsModel, ErrorDetailModel> {
+        return pokemonApiDataSource.getPokemonList(page)
             .transformSuccess { it.mapTo() }
             .transformError { it.mapTo() }
     }

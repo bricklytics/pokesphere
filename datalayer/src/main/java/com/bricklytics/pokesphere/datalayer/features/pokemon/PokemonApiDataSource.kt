@@ -12,6 +12,7 @@ import javax.inject.Inject
 class PokemonApiDataSource @Inject constructor (
     private val pokemonAPI: PokemonAPI,
 ): BaseApiDataSource() {
+    private val offset: Int = 20
 
     suspend fun getPokemon(
         name: String
@@ -21,9 +22,14 @@ class PokemonApiDataSource @Inject constructor (
         }
     }
 
-    suspend fun getPokemonList(): ResultWrapper<PokemonsDTO, ErrorDetailDTO> {
+    suspend fun getPokemonList(
+        page: Int
+    ): ResultWrapper<PokemonsDTO, ErrorDetailDTO> {
         return safeApiCall {
-            pokemonAPI.getPokemonList()
+            pokemonAPI.getPokemonList(
+                offset = page*offset,
+                limit = offset
+            )
         }
     }
 }

@@ -11,5 +11,7 @@ interface PokemonRepository {
         name: String
     ): ResultWrapper<PokemonModel, ErrorDetailModel>
 
-    suspend fun getPokemonList(): ResultWrapper<PokemonsModel, ErrorDetailModel>
+    suspend fun getPokemonList(
+        page: Int
+    ): ResultWrapper<PokemonsModel, ErrorDetailModel>
 }
