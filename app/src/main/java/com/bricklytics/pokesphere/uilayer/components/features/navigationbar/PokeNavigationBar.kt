@@ -51,7 +51,7 @@ private fun NavigationBarPreview() {
     MaterialTheme {
         Scaffold(
             topBar = {
-                PokeNavigationBar(
+                PokeTopBar(
                     title = "Title",
                     icon = null,
                     color = Color.Yellow,
@@ -70,7 +70,7 @@ private fun NavigationBarPreview() {
 }
 
 @Composable
-fun PokeNavigationBar(
+fun PokeTopBar(
     title: String,
     icon: Icons? = null,
     color: Color = Color.Transparent,
@@ -137,13 +137,26 @@ fun hasEdgeToEdgeSupport(): Boolean {
     return paddingBottom > 0.dp || paddingTop > 0.dp
 }
 
-private fun getStatusBarHeight(view: View, density: Density): Dp {
+fun getStatusBarHeight(view: View, density: Density): Dp {
     val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(
         view.rootWindowInsets
     )
     val statusBarHeightPx = windowInsets.getInsets(Type.statusBars()).top
 
     return with(density) { statusBarHeightPx.toDp() }
+}
+
+@Composable
+fun getNavigationBarHeight(): Dp {
+    val view = LocalView.current
+    val density = LocalDensity.current
+
+    val windowInsets = WindowInsetsCompat.toWindowInsetsCompat(
+        view.rootWindowInsets
+    )
+    val navigationBarHeightPx = windowInsets.getInsets(Type.navigationBars()).bottom
+
+    return with(density) { navigationBarHeightPx.toDp() }
 }
 
 @Suppress("DEPRECATION")
