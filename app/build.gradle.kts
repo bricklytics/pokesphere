@@ -77,6 +77,8 @@ dependencies {
 
     // Glide image loading
     implementation(libs.glide)
+    annotationProcessor(libs.glide.compiler)
+    implementation(libs.glide.compose)
 
     // Timber for logging
     implementation(libs.timber)
