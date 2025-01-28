@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">pokesphere-app</string>
 
+    <!-- Common Names -->
+    <string name="all_action_ok">OK</string>
+    <string name="all_action_cancel">Cancel</string>"
+
+    <!-- HomeUI -->
+    <string name="home_title">PokeSphere</string>
+
     <!-- PokemonUI -->
+    <string name="pokemon_ui_title">Select a Pokemon</string>"
     <string name="pokemon_bottom_sheet_title">Ooops!</string>
     <string name="pokemon_bottom_sheet_subtitle">Looks like something went wrong…</string>
     <string name="pokemon_bottom_sheet_description">Wait a little and try again, right!?</string>
