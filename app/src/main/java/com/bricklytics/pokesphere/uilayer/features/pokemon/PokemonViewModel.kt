@@ -27,11 +27,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
-@HiltViewModel(assistedFactory = PokemonViewModelFactory::class)
-class PokemonViewModel @AssistedInject constructor(
-    @Assisted
-    private val name: String,
+@HiltViewModel
+class PokemonViewModel @Inject constructor(
     private val getPokemonDataUseCase: PokemonGetDataUseCase,
     private val getPokemonListUseCase: PokemonGetListUseCase,
     @AppDispatcher(AppDispatchers.IO)
@@ -150,9 +149,4 @@ class PokemonViewModel @AssistedInject constructor(
             }
         }
     }
-}
-
-@AssistedFactory
-interface PokemonViewModelFactory {
-    fun create(name: String): PokemonViewModel
 }

@@ -8,7 +8,6 @@ import androidx.navigation.compose.composable
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonUI
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
-import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModelFactory
 
 fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
 
@@ -17,11 +16,7 @@ fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
             navController.getBackStackEntry(AppRoutes.Home.route)
         }
 
-        val viewModel = hiltViewModel<PokemonViewModel, PokemonViewModelFactory>(parentEntry) {
-            it.create(
-                name = backStackEntry.arguments?.getString("name").orEmpty()
-            )
-        }
+        val viewModel = hiltViewModel<PokemonViewModel>()
 
         PokemonUI(
             navController = navController,
