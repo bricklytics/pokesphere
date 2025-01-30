@@ -34,7 +34,7 @@ androidxTest = "1.6.1"
 androidTestRunner = "1.6.2"
 mockito = "5.15.2"
 mockito-kotlin = "5.4.0"
-protoliteWellKnownTypes = "18.0.0"
+awesomeCompose = "1.0.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -72,6 +72,7 @@ androidx-lifecycle = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", ve
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "androidxRoom" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "androidxRoom" }
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "androidxRoom" }
+androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "androidxRoom" }
 
 #Testing
 androidx-arch-core = { module = "androidx.arch.core:core-testing", version.ref = "androidxArchCore" }
@@ -126,6 +127,9 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 glide-compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
 glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glideCompose" }
+
+#Icons - FontAwesome
+awesome-compose = { module = "com.github.Gurupreet:FontAwesomeCompose", version.ref = "awesomeCompose" }
 
 # Unit test
 junit = { module = "junit:junit", version.ref = "junit" }

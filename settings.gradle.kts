@@ -61,6 +61,9 @@ dependencyResolutionManagement {
                 snapshotsOnly()
             }
         }
+
+        // fetch font awesome libraries from jitpack
+        maven(url = "https://jitpack.io")
     }
 }
 
@@ -68,3 +71,4 @@ rootProject.name = "pokesphere-app"
 include(":app")
 include(":datalayer")
 include(":domainlayer")
+include(":localdatalayer")

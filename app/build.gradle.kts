@@ -9,6 +9,7 @@ plugins {
 android {
     namespace = "com.bricklytics.pokesphere.uilayer"
     compileSdk = 35
+    buildFeatures.buildConfig = true
 
     defaultConfig {
         applicationId = "com.bricklytics.pokesphere.uilayer"
@@ -28,7 +29,8 @@ android {
             isShrinkResources = false
         }
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            buildConfigField("String", "BASE_URL", "\"https://pokeapi.co/\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -38,6 +40,24 @@ android {
 
     buildFeatures {
         compose = true
+        buildConfig = true
+    }
+
+    hilt {
+        enableAggregatingTask = true
+    }
+
+    kotlin {
+        sourceSets.configureEach {
+            kotlin.srcDir(
+                layout.buildDirectory.files("generated/ksp/$name/kotlin/")
+            )
+        }
+        sourceSets.all {
+            languageSettings {
+                languageVersion = "2.0"
+            }
+        }
     }
 
     composeOptions {
@@ -79,6 +99,9 @@ dependencies {
     implementation(libs.glide)
     annotationProcessor(libs.glide.compiler)
     implementation(libs.glide.compose)
+
+    //Font Awesome
+    implementation(libs.awesome.compose)
 
     // Timber for logging
     implementation(libs.timber)

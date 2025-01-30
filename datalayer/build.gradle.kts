@@ -15,14 +15,23 @@ android {
 
     buildTypes {
         debug {
+            isMinifyEnabled = false
             buildConfigField("String", "BASE_URL", "\"https://pokeapi.co/\"")
         }
+        release {
+            isMinifyEnabled = true
+            buildConfigField("String", "BASE_URL", "\"https://pokeapi.co/\"")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
+        }
     }
-
 }
 
 dependencies {
     implementation(project(":domainlayer"))
+    implementation(project(":localdatalayer"))
 
     // Coroutine support
     implementation(libs.coroutines)
