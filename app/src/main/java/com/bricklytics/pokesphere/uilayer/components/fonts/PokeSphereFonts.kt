@@ -24,14 +24,20 @@ val psTypography = Typography(
     ),
     bodyMedium = TextStyle(
         fontFamily = psFontFamily,
-        fontSize = 14.sp,
-        lineHeight = 16.sp,
-        fontWeight = FontWeight.Bold
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        fontWeight = FontWeight.Normal
     ),
     bodyLarge = TextStyle(
         fontFamily = psFontFamily,
-        fontSize = 16.sp,
-        lineHeight = 24.sp,
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
         fontWeight = FontWeight.Bold
+    ),
+    titleMedium = TextStyle(
+        fontFamily = psFontFamily,
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
+        fontWeight = FontWeight.Normal
     )
 )
