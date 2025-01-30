@@ -6,19 +6,25 @@ import android.view.Window
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
+import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +45,12 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsCompat.Type
+import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.model.BottomBarItem
+import com.bricklytics.pokesphere.uilayer.components.fonts.psFontFamily
+import com.bricklytics.pokesphere.uilayer.components.fonts.psTypography
+import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIconType
+import com.guru.fontawesomecomposelib.FaIcons
 import android.graphics.Color as AndroidColor
 
 
@@ -48,15 +60,34 @@ import android.graphics.Color as AndroidColor
 )
 @Composable
 private fun NavigationBarPreview() {
+    val items = listOf(
+        BottomBarItem(
+            resIcon = FaIcons.Home,
+            label = "Home"
+        ),
+        BottomBarItem(
+            resIcon = FaIcons.Search,
+            label = "Search"
+        ),
+        BottomBarItem(
+            resIcon = FaIcons.BookReader,
+            label = "Wiki"
+        ),
+        BottomBarItem(
+            resIcon = FaIcons.Gamepad,
+            label = "Games"
+        )
+    )
+
     MaterialTheme {
         Scaffold(
             topBar = {
                 PokeTopBar(
                     title = "Title",
-                    icon = null,
                     color = Color.Yellow,
                     onClickIcon = { },
-                    onClickToolbar = { }
+                    onClickToolbar = { },
+                    onClickMenu = { }
                 )
             },
             content = { paddingValues ->
@@ -64,7 +95,13 @@ private fun NavigationBarPreview() {
                     Text("Content")
                 }
             },
-            bottomBar = { }
+            bottomBar = {
+                PokeBottomBar(
+                    items = items,
+                    color = Color.Yellow,
+                    onClickItem = {}
+                )
+            }
         )
     }
 }
@@ -72,11 +109,10 @@ private fun NavigationBarPreview() {
 @Composable
 fun PokeTopBar(
     title: String,
-    icon: Icons? = null,
     color: Color = Color.Transparent,
-    visibleIcon: Boolean = true,
     onClickIcon: (() -> Unit)? = null,
-    onClickToolbar: (() -> Unit)? = null
+    onClickToolbar: (() -> Unit)? = null,
+    onClickMenu: (() -> Unit)? = null
 ) {
     val view = LocalView.current
     val density = LocalDensity.current
@@ -106,15 +142,28 @@ fun PokeTopBar(
                 .fillMaxWidth()
                 .size(48.dp)
         ) {
-            if (visibleIcon) {
+            if (onClickIcon != null) {
                 IconButton(
                     modifier = Modifier.align(Alignment.TopStart),
-                    onClick = { onClickIcon?.invoke() }
+                    onClick = { onClickIcon() }
                 ) {
-                    Icon(
-                        modifier = Modifier.size(32.dp),
-                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                        contentDescription = null,
+                    FaIcon(
+                        modifier = Modifier.size(24.dp),
+                        faIcon = FaIcons.ArrowLeft,
+                        tint = contrastColor
+                    )
+                }
+            }
+
+            if(onClickMenu != null ){
+                IconButton(
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    onClick = { onClickMenu() }
+                ) {
+                    FaIcon(
+                        modifier = Modifier.align(Alignment.Center),
+                        faIcon = FaIcons.Bars,
+                        size = 24.dp,
                         tint = contrastColor
                     )
                 }
@@ -123,7 +172,72 @@ fun PokeTopBar(
             Text(
                 modifier = Modifier.align(Alignment.Center),
                 text = title,
+                fontFamily = psFontFamily,
+                style = psTypography.titleMedium,
                 color = contrastColor
+            )
+        }
+    }
+}
+
+@Composable
+fun PokeBottomBar(
+    modifier: Modifier = Modifier,
+    items: List<BottomBarItem>,
+    color: Color = Color.Transparent,
+    onClickItem: (Int) -> Unit
+) {
+    val contrastColor = getContrastingColor(color.toArgb())
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .requiredHeight(72.dp)
+                .background(color = color)
+                .padding(vertical = 8.dp)
+                .fillMaxWidth()
+        ) {
+            items.forEachIndexed { index, item ->
+                Box(
+                    modifier = Modifier
+                        .requiredHeight(64.dp)
+                        .padding(4.dp)
+                ) {
+                    IconButton(
+                        modifier = Modifier
+                            .requiredWidth(64.dp)
+                            .background(color = color,)
+                            .fillMaxHeight(),
+                        onClick = { onClickItem(index) }
+                    ) {
+                        FaIcon(
+                            faIcon = item.resIcon,
+                            tint = contrastColor,
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .align(Alignment.TopCenter)
+                        )
+                        Text(
+                            text = item.label,
+                            fontFamily = psFontFamily,
+                            style = psTypography.bodySmall.copy(color = contrastColor),
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .align(Alignment.BottomCenter)
+                        )
+                    }
+                }
+            }
+        }
+        if (hasEdgeToEdgeSupport()) {
+            Spacer(
+                modifier = Modifier
+                    .height(getNavigationBarHeight())
+                    .background(color = color)
+                    .fillMaxWidth()
             )
         }
     }
