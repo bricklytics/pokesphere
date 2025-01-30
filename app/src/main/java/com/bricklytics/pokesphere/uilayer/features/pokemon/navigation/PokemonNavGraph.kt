@@ -12,10 +12,6 @@ import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
 fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
 
     composable(AppRoutes.Pokemon.route) { backStackEntry ->
-        val parentEntry = remember(backStackEntry) {
-            navController.getBackStackEntry(AppRoutes.Home.route)
-        }
-
         val viewModel = hiltViewModel<PokemonViewModel>()
 
         PokemonUI(

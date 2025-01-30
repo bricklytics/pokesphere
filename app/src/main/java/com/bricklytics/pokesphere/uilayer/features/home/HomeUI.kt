@@ -1,18 +1,19 @@
 package com.bricklytics.pokesphere.uilayer.features.home
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
@@ -22,9 +23,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
+import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCard
+import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeBottomBar
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeTopBar
-import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.getNavigationBarHeight
-import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.hasEdgeToEdgeSupport
+import com.bricklytics.pokesphere.uilayer.features.home.model.HomeEvents
+import com.bricklytics.pokesphere.uilayer.features.home.model.HomeUIState
 
 @Preview(showSystemUi = true, device = Devices.PIXEL_6)
 @Composable
@@ -46,42 +49,63 @@ fun HomeUI(
         topBar = {
             PokeTopBar(
                 title = stringResource(R.string.home_title),
-                visibleIcon = false,
-                color = Color.Yellow
+                color = viewModel.uiState.colorTheme
             )
         },
-        content = {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .padding(it)
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                Text("Home Screen")
-            }
+        content = { paddingValues ->
+            HomeContent(
+                paddingValues = paddingValues,
+                uiState = viewModel.uiState
+            )
         },
         bottomBar = {
-            Column {
-                Button(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth(),
-                    onClick = {
-                        val route = AppRoutes.Pokemon.setArgument("bulbasaur")
-                        navController.navigate(route)
+            PokeBottomBar(
+                items = viewModel.uiState.bottomMenuItems,
+                color =  viewModel.uiState.colorTheme,
+                onClickItem = { index ->
+                    when(index) {
+                        0 -> { navController.navigate(AppRoutes.Home.route) }
+                        1 -> { navController.navigate(AppRoutes.Pokemon.route) }
+                        else -> Unit
                     }
-                ) {
-                    Text("Get Pokemon")
                 }
-                if (hasEdgeToEdgeSupport()) {
-                    Spacer(
-                        modifier = Modifier
-                            .height(getNavigationBarHeight())
-                            .fillMaxWidth()
-                    )
-                }
-            }
+            )
         }
     )
+}
+
+@Composable
+private fun HomeContent(
+    paddingValues: PaddingValues,
+    uiState: HomeUIState,
+    onEvent: (HomeEvents) -> Unit = {}
+) {
+    val context  = LocalContext.current
+
+    LaunchedEffect(uiState.favImage) {
+        if(uiState.favImage.isNotBlank()) {
+            onEvent(HomeEvents.OnFetchPokemonImage(context))
+        }
+    }
+
+    Column(
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxWidth()
+    ) {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxSize()
+        ) {
+            PokeCard(
+                imgUrl = uiState.favImage,
+                label = uiState.pokemonName,
+                onClick =  { },
+                modifier = Modifier
+                    .align(Alignment.Center)
+            )
+        }
+    }
 }

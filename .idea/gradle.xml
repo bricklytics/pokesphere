@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/datalayer" />
             <option value="$PROJECT_DIR$/domainlayer" />
+            <option value="$PROJECT_DIR$/localdatalayer" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />
