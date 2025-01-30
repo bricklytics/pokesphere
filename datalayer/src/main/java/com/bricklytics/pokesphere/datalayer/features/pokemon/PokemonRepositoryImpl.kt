@@ -32,10 +32,6 @@ class PokemonRepositoryImpl @Inject constructor(
             .onSuccess {
                 pokemonDao.insertPokemon(it.asEntity())
             }
-
-//        return pokemonApiDataSource.getPokemon(name)
-//            .transformSuccess { it.mapTo() }
-//            .transformError { it.mapTo() }
     }
 
     override suspend fun getPokemonList(
@@ -63,9 +59,6 @@ class PokemonRepositoryImpl @Inject constructor(
                     pokemonDao.insertPokemons(pokemons)
                 }
             }
-//        return pokemonApiDataSource.getPokemonList(page)
-//            .transformSuccess { it.mapTo() }
-//            .transformError { it.mapTo() }
     }
 
     override suspend fun setFavoritePokemon(
@@ -73,6 +66,7 @@ class PokemonRepositoryImpl @Inject constructor(
         favorite: Boolean
     ): ResultWrapper<Boolean, ErrorDetailModel> {
         return runCatching {
+            pokemonDao.clearOldFavoritePokemon()
             pokemonDao.setFavoritePokemon(name, favorite)
         }.fold(
             onSuccess = {
@@ -87,25 +81,15 @@ class PokemonRepositoryImpl @Inject constructor(
                 )
             }
         )
-//        return ResultWrapper.Error(
-//            ErrorDetailModel(
-//                code = 1,
-//                message = "Database not implmemented"
-//            )
-//        )
     }
 
     override suspend fun getFavoritePokemon(): ResultWrapper<PokemonModel, ErrorDetailModel> {
         return runCatching {
             pokemonDao.getFavoritePokemon()
                 .asDomain()
-                .also {
-                    if (it == null) throw Throwable("Favorite pokemon not found")
-                }
+                .also { if (it == null) throw Throwable("Favorite pokemon not found") }
         }.fold(
-            onSuccess = {
-                ResultWrapper.Success(data = it!!)
-            },
+            onSuccess = { ResultWrapper.Success(data = it!!) },
             onFailure = {
                 ResultWrapper.Error(
                     ErrorDetailModel(
@@ -115,12 +99,5 @@ class PokemonRepositoryImpl @Inject constructor(
                 )
             }
         )
-
-//        return ResultWrapper.Error(
-//            ErrorDetailModel(
-//                code = 1,
-//                message = "Database not implmemented"
-//            )
-//        )
     }
 }
