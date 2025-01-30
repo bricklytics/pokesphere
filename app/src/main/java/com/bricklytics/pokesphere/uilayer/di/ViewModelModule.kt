@@ -2,6 +2,7 @@ package com.bricklytics.pokesphere.uilayer.di
 
 import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
 import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
+import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.GetFavoritePokemonUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetListUseCase
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
@@ -20,7 +21,13 @@ internal class ViewModelModule {
 
     @Provides
     @ViewModelScoped
-    fun provideHomeViewModel() : HomeViewModel = HomeViewModel()
+    fun provideHomeViewModel(
+        getFavoritePokemonUseCase: GetFavoritePokemonUseCase,
+        @AppDispatcher(AppDispatchers.IO) dispatcher: CoroutineDispatcher,
+    ) : HomeViewModel = HomeViewModel(
+        getFavoritePokemonUseCase = getFavoritePokemonUseCase,
+        dispatcher = dispatcher
+    )
 
     @Provides
     @ViewModelScoped

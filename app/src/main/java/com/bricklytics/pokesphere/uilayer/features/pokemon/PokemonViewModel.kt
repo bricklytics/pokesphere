@@ -20,9 +20,6 @@ import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetType
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetUIState
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonEvent
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.PokemonUIState
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
@@ -44,10 +41,10 @@ class PokemonViewModel @Inject constructor(
     var bottomSheetUiState by mutableStateOf(BottomSheetUIState())
         private set
 
-    init { load() }
+    init { loadView() }
 
     @VisibleForTesting
-    fun load() {
+    fun loadView() {
         getPokemonList()
     }
 
@@ -60,8 +57,6 @@ class PokemonViewModel @Inject constructor(
                     "page" to uiState.page
                 )
             ).onSuccess {
-                uiState = uiState.copy(totalCount = it.count)
-
                 val names = it.pokemonList
                     .map { it.name }
                     .toMutableList()
@@ -106,10 +101,8 @@ class PokemonViewModel @Inject constructor(
             }
 
             is PokemonEvent.OnDrainedList -> {
-                if (uiState.page < uiState.totalCount) {
-                    uiState = uiState.copy(page = uiState.page + 1)
-                    getPokemonList()
-                }
+                uiState = uiState.copy(page = uiState.page + 1)
+                getPokemonList()
             }
         }
     }
