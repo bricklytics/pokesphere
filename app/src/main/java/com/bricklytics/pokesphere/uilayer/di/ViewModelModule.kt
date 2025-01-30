@@ -5,6 +5,7 @@ import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.GetFavoritePokemonUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetListUseCase
+import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.SetFavoritePokemonUseCase
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.features.home.HomeViewModel
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
@@ -34,11 +35,13 @@ internal class ViewModelModule {
     fun providePokemonViewModel(
         getPokemonDataUseCase: PokemonGetDataUseCase,
         getPokemonListUseCase: PokemonGetListUseCase,
+        setFavoritePokemonUseCase: SetFavoritePokemonUseCase,
         resources: ResourcesProvider,
         @AppDispatcher(AppDispatchers.IO) dispatcher: CoroutineDispatcher,
     ): PokemonViewModel = PokemonViewModel(
         getPokemonDataUseCase = getPokemonDataUseCase,
         getPokemonListUseCase = getPokemonListUseCase,
+        setFavoritePokemonUseCase = setFavoritePokemonUseCase,
         resources = resources,
         dispatcher = dispatcher
     )

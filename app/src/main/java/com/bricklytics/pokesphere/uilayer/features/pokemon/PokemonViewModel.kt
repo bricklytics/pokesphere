@@ -13,6 +13,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGe
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetDataUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetListFailureFactory
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetListUseCase
+import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.SetFavoritePokemonUseCase
 import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.model.BottomSheetModel
@@ -30,6 +31,7 @@ import javax.inject.Inject
 class PokemonViewModel @Inject constructor(
     private val getPokemonDataUseCase: PokemonGetDataUseCase,
     private val getPokemonListUseCase: PokemonGetListUseCase,
+    private val setFavoritePokemonUseCase: SetFavoritePokemonUseCase,
     @AppDispatcher(AppDispatchers.IO)
     private val dispatcher: CoroutineDispatcher,
     private val resources: ResourcesProvider
@@ -41,11 +43,32 @@ class PokemonViewModel @Inject constructor(
     var bottomSheetUiState by mutableStateOf(BottomSheetUIState())
         private set
 
-    init { loadView() }
+    init {
+        loadView()
+    }
 
     @VisibleForTesting
     fun loadView() {
         getPokemonList()
+    }
+
+    fun onEvent(event: PokemonEvent) {
+        when (event) {
+            is PokemonEvent.OnDismissBottomSheet -> {
+                bottomSheetUiState = bottomSheetUiState.copy(
+                    enabled = false
+                )
+            }
+
+            is PokemonEvent.OnDrainedList -> {
+                uiState = uiState.copy(page = uiState.page + 1)
+                getPokemonList()
+            }
+
+            is PokemonEvent.OnLongPressCard -> {
+                setFavoritePokemon(event.index)
+            }
+        }
     }
 
     @VisibleForTesting
@@ -65,6 +88,18 @@ class PokemonViewModel @Inject constructor(
             }.onFailure { error ->
                 handlePokemonListError(error)
             }
+        }
+    }
+
+    @VisibleForTesting
+    fun setFavoritePokemon(index: Int) {
+        viewModelScope.launch(dispatcher) {
+            setFavoritePokemonUseCase.fetch(
+                args = mapOf(
+                    "name" to uiState.pokemonList[index].name,
+                    "favorite" to true
+                )
+            )
         }
     }
 
@@ -90,21 +125,6 @@ class PokemonViewModel @Inject constructor(
                 addAll(0, uiState.pokemonList)
             }
         )
-    }
-
-    fun onEvent(event: PokemonEvent) {
-        when (event) {
-            is PokemonEvent.OnDismissBottomSheet -> {
-                bottomSheetUiState = bottomSheetUiState.copy(
-                    enabled = false
-                )
-            }
-
-            is PokemonEvent.OnDrainedList -> {
-                uiState = uiState.copy(page = uiState.page + 1)
-                getPokemonList()
-            }
-        }
     }
 
     @VisibleForTesting
