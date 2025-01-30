@@ -14,4 +14,11 @@ interface PokemonRepository {
     suspend fun getPokemonList(
         page: Int
     ): ResultWrapper<PokemonsModel, ErrorDetailModel>
+
+    suspend fun setFavoritePokemon(
+        name: String,
+        favorite: Boolean
+    ): ResultWrapper<Boolean, ErrorDetailModel>
+
+    suspend fun getFavoritePokemon(): ResultWrapper<PokemonModel, ErrorDetailModel>
 }

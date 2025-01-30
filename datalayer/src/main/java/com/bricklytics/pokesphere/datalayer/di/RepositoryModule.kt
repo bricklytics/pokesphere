@@ -6,10 +6,12 @@ import com.bricklytics.pokesphere.datalayer.features.pokemon.PokemonApiDataSourc
 import com.bricklytics.pokesphere.datalayer.features.pokemon.PokemonRepositoryImpl
 import com.bricklytics.pokesphere.domainlayer.features.PokemonRepository
 import com.bricklytics.pokesphere.domainlayer.features.ability.AbilityRepository
+import com.bricklytics.pokesphere.localdatalayer.feature.pokemon.PokemonDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 
 @Module
@@ -17,11 +19,17 @@ import dagger.hilt.components.SingletonComponent
 internal class RepositoryModule {
 
     @Provides
+    @Singleton
     fun providePokemonRepository(
-        pokemonDataSource: PokemonApiDataSource
-    ) : PokemonRepository = PokemonRepositoryImpl(pokemonDataSource)
+        pokemonDataSource: PokemonApiDataSource,
+        pokemonDao: PokemonDao
+    ) : PokemonRepository = PokemonRepositoryImpl(
+        pokemonApiDataSource = pokemonDataSource,
+        pokemonDao = pokemonDao
+    )
 
     @Provides
+    @Singleton
     fun provideAbilityRepository(
         abilityDataSource: AbilityApiDataSource
     ) : AbilityRepository = AbilityRepositoryImpl(abilityDataSource)

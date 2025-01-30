@@ -30,10 +30,6 @@ fun PokemonModel.asEntity(): PokemonEntity {
 fun PokemonEntity?.asDomain(): PokemonModel? {
     if (this == null || this.name.isBlank()) return null
 
-    val isUrlEmpty = this.urlDefault.isBlank() || this.urlShinny.isBlank()
-
-    if(isUrlEmpty) return PokemonModel()
-
     return PokemonModel(
         id = this.id,
         name = this.name,

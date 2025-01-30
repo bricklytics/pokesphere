@@ -34,12 +34,9 @@ interface PokemonDao {
     @Query("SELECT * FROM PokemonEntity WHERE favorite == 1")
     suspend fun getFavoritePokemon(): PokemonEntity
 
-    @Query("SELECT * FROM PokemonEntity WHERE page = :page")
+    @Query("SELECT * FROM PokemonEntity WHERE page = :page and id < :page")
     suspend fun getPokemonList(page: Int): List<PokemonEntity>
 
-    @Query("SELECT * FROM PokemonEntity WHERE page <= :page")
-    suspend fun getAllPokemonList(page: Int): List<PokemonEntity>
-
-    @Query("SELECT * FROM PokemonEntity WHERE name == :name")
+    @Query("SELECT * FROM PokemonEntity WHERE name == :name and (urlDefault !='' or urlShinny !='')")
     suspend fun getPokemon(name: String): PokemonEntity?
 }
