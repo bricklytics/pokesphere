@@ -22,10 +22,6 @@ import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.requiredWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBars
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -48,10 +44,9 @@ import androidx.core.view.WindowInsetsCompat.Type
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.model.BottomBarItem
 import com.bricklytics.pokesphere.uilayer.components.fonts.psFontFamily
 import com.bricklytics.pokesphere.uilayer.components.fonts.psTypography
+import com.bricklytics.pokesphere.uilayer.components.utils.getContrastingColor
 import com.guru.fontawesomecomposelib.FaIcon
-import com.guru.fontawesomecomposelib.FaIconType
 import com.guru.fontawesomecomposelib.FaIcons
-import android.graphics.Color as AndroidColor
 
 
 @Preview(
@@ -117,10 +112,10 @@ fun PokeTopBar(
     val view = LocalView.current
     val density = LocalDensity.current
 
-    val contrastColor = getContrastingColor(color.toArgb())
+    val contrastColor = color.toArgb().getContrastingColor()
 
     LocalActivity.current?.let {
-        setStatusBarColors(view, it.window, color, contrastColor != Color.White)
+        setSystemBarColors(view, it.window, color, contrastColor != Color.White)
     }
 
     Column(Modifier.background(color = color)) {
@@ -187,7 +182,7 @@ fun PokeBottomBar(
     color: Color = Color.Transparent,
     onClickItem: (Int) -> Unit
 ) {
-    val contrastColor = getContrastingColor(color.toArgb())
+    val contrastColor = color.toArgb().getContrastingColor()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -209,7 +204,6 @@ fun PokeBottomBar(
                     IconButton(
                         modifier = Modifier
                             .requiredWidth(64.dp)
-                            .background(color = color,)
                             .fillMaxHeight(),
                         onClick = { onClickItem(index) }
                     ) {
@@ -223,7 +217,8 @@ fun PokeBottomBar(
                         Text(
                             text = item.label,
                             fontFamily = psFontFamily,
-                            style = psTypography.bodySmall.copy(color = contrastColor),
+                            style = psTypography.bodySmall,
+                            color = contrastColor,
                             modifier = Modifier
                                 .padding(4.dp)
                                 .align(Alignment.BottomCenter)
@@ -274,7 +269,7 @@ fun getNavigationBarHeight(): Dp {
 }
 
 @Suppress("DEPRECATION")
-private fun setStatusBarColors(
+private fun setSystemBarColors(
     view: View,
     window: Window,
     color: Color,
@@ -283,6 +278,7 @@ private fun setStatusBarColors(
     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
         window.statusBarColor = color.toArgb()
         window.decorView.isForceDarkAllowed = !isDark
+        window.navigationBarColor = color.toArgb()
 
         if (!view.isInEditMode) {
             window.let {
@@ -295,13 +291,4 @@ private fun setStatusBarColors(
             }
         }
     }
-}
-
-private fun getContrastingColor(backgroundColor: Int): Color {
-    val red = AndroidColor.red(backgroundColor)
-    val green = AndroidColor.green(backgroundColor)
-    val blue = AndroidColor.blue(backgroundColor)
-    val luminance = (0.299 * red + 0.587 * green + 0.114 * blue) / 255
-
-    return if (luminance > 0.5) Color.Black else Color.White
 }
