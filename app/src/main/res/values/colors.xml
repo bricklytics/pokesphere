@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black" category="background-color">#FF000000</color>
+    <color name="light_pure" category="background-color">#FFFFFFFF</color>
+    <color name="light_up" category="background-color">#EDEFFE</color>
+    <color name="light_down" category="background-color">#D7DAEC</color>
+    <color name="light_deep" category="background-color">#C5C8D8</color>
+    <color name="dark_pure" category="background-color">#0C0D14</color>
+    <color name="dark_deep" category="background-color">#393B47</color>
+    <color name="dark_down" category="background-color">#67697A</color>
+    <color name="dark_up" category="background-color">#AAADC0</color>
+    <color name="positive_deep" category="background-color">#199942</color>
+    <color name="positive_pure" category="background-color">#2BC150</color>
+    <color name="positive_down" category="background-color">#7ADC94</color>
+    <color name="positive_up" category="background-color">#D0FFD4</color>
+    <color name="warning_deep" category="background-color">#FF8A14</color>
+    <color name="warning_pure" category="background-color">#FFA347</color>
+    <color name="warning_down" category="background-color">#FFBD7A</color>
+    <color name="warning_up" category="background-color">#FFE8C1</color>
+    <color name="negative_deep" category="background-color">#D31441</color>
+    <color name="negative_pure" category="background-color">#F5456E</color>
+    <color name="negative_down" category="background-color">#F27592</color>
+    <color name="negative_up" category="background-color">#FFCBD4</color>
 </resources>
