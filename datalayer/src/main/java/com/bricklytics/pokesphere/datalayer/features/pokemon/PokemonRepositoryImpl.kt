@@ -30,7 +30,13 @@ class PokemonRepositoryImpl @Inject constructor(
             .transformSuccess { it.mapTo() }
             .transformError { it.mapTo() }
             .onSuccess {
-                pokemonDao.insertPokemon(it.asEntity())
+                pokemonDao.updatePokemon(
+                    name = it.name,
+                    id = it.id,
+                    urlDefault = it.officialArtworkModel.frontDefault,
+                    urlShinny = it.officialArtworkModel.frontShiny,
+                    favorite = it.isFavorite,
+                )
             }
     }
 
@@ -42,7 +48,7 @@ class PokemonRepositoryImpl @Inject constructor(
             .mapNotNull { it.asDomain() }
 
         if (daoData.isNotEmpty()) {
-          return ResultWrapper.Success(
+            return ResultWrapper.Success(
                 data = PokemonsModel(pokemonList = daoData)
             )
         }
@@ -52,7 +58,7 @@ class PokemonRepositoryImpl @Inject constructor(
             .transformSuccess { it.mapTo() }
             .transformError { it.mapTo() }
             .onSuccess { success ->
-                if(success.pokemonList.isNotEmpty()) {
+                if (success.pokemonList.isNotEmpty()) {
                     val pokemons = success.pokemonList.map { model ->
                         model.also { it.page = page }.asEntity()
                     }
@@ -62,12 +68,11 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setFavoritePokemon(
-        name: String,
-        favorite: Boolean
+        name: String
     ): ResultWrapper<Boolean, ErrorDetailModel> {
         return runCatching {
             pokemonDao.clearOldFavoritePokemon()
-            pokemonDao.setFavoritePokemon(name, favorite)
+            pokemonDao.setFavoritePokemon(name)
         }.fold(
             onSuccess = {
                 ResultWrapper.Success(data = true)
@@ -89,7 +94,9 @@ class PokemonRepositoryImpl @Inject constructor(
                 .asDomain()
                 .also { if (it == null) throw Throwable("Favorite pokemon not found") }
         }.fold(
-            onSuccess = { ResultWrapper.Success(data = it!!) },
+            onSuccess = {
+                ResultWrapper.Success(data = it!!)
+            },
             onFailure = {
                 ResultWrapper.Error(
                     ErrorDetailModel(
