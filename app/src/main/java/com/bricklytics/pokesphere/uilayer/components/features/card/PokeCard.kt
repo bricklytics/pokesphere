@@ -3,7 +3,11 @@ package com.bricklytics.pokesphere.uilayer.components.features.card
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -12,6 +16,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,15 +24,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.components.features.utils.ShimmeringContainer
 import com.bricklytics.pokesphere.uilayer.components.fonts.psFontFamily
+import com.bricklytics.pokesphere.uilayer.components.utils.PokemonBitmapCustomTarget
+import com.bricklytics.pokesphere.uilayer.components.utils.getContrastingColor
+import com.bumptech.glide.Glide
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIcons
 
 
 @Preview
@@ -48,35 +63,77 @@ fun PokeCard(
     modifier: Modifier = Modifier,
     imgUrl: String,
     label: String,
+    isFavorite: Boolean = false,
     onClick: () -> Unit = {},
-    onLongClick: () -> Unit = {}
+    onLongPress: () -> Unit = {}
 ) {
-    var themeColor by remember { mutableStateOf(Color.LightGray) }
+    val context = LocalContext.current
+    var likeIt by remember(isFavorite) { mutableStateOf(isFavorite) }
+    var themeColor by remember { mutableStateOf(Color.Transparent ) }
+
+    LaunchedEffect(imgUrl) {
+        Glide.with(context)
+            .asBitmap()
+            .load(imgUrl)
+            .into(PokemonBitmapCustomTarget { color ->
+                themeColor = color
+            })
+    }
 
     Card(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(2.dp, Color.White),
         modifier = modifier
-            .background(themeColor)
+            .background(
+                color = themeColor,
+                shape = RoundedCornerShape(8.dp)
+            )
             .padding(8.dp)
             .clickable(onClick = onClick)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onLongPress()
+                        likeIt = !likeIt
+                    }
+                )
+            }
     ) {
-        GlideImage(
-            model = imgUrl,
-            contentDescription = null,
-            modifier = Modifier
-                .padding(4.dp)
-                .align(Alignment.CenterHorizontally),
-        )
-        Text(
-            text = label,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            fontFamily = psFontFamily,
-            modifier = Modifier
-                .padding(horizontal = 4.dp, vertical = 8.dp)
-                .align(Alignment.CenterHorizontally)
-        )
+        Box {
+            FaIcon(
+                faIcon = FaIcons.Star,
+                tint = if (likeIt || isFavorite) colorResource(R.color.warning_down)
+                       else Color.Transparent,
+                modifier = Modifier
+                    .padding(4.dp)
+                    .align(Alignment.TopEnd)
+            )
+            Column(
+                modifier = Modifier.align(Alignment.Center)
+            ) {
+                GlideImage(
+                    model = imgUrl,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(4.dp)
+                )
+                if(label.isNotBlank()){
+                    Text(
+                        text = label,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Normal,
+                        fontFamily = psFontFamily,
+                        color = themeColor.toArgb().getContrastingColor(),
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .background(themeColor)
+                            .padding(4.dp)
+                            .height(24.dp)
+                            .fillMaxWidth()
+                    )
+                }
+            }
+        }
     }
 }
 
