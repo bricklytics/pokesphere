@@ -27,6 +27,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -75,11 +80,12 @@ private fun NavigationBarPreview() {
     )
 
     MaterialTheme {
+        val themeColor = Color.Black
         Scaffold(
             topBar = {
                 PokeTopBar(
                     title = "Title",
-                    color = Color.Yellow,
+                    color = themeColor,
                     onClickIcon = { },
                     onClickToolbar = { },
                     onClickMenu = { }
@@ -93,7 +99,7 @@ private fun NavigationBarPreview() {
             bottomBar = {
                 PokeBottomBar(
                     items = items,
-                    color = Color.Yellow,
+                    color = themeColor,
                     onClickItem = {}
                 )
             }
@@ -182,7 +188,12 @@ fun PokeBottomBar(
     color: Color = Color.Transparent,
     onClickItem: (Int) -> Unit
 ) {
-    val contrastColor = color.toArgb().getContrastingColor()
+    var contrastColor by remember { mutableStateOf(color) }
+
+    LaunchedEffect(color) {
+        contrastColor = color.toArgb().getContrastingColor()
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -283,6 +294,7 @@ private fun setSystemBarColors(
         if (!view.isInEditMode) {
             window.let {
                 WindowCompat.getInsetsController(it, view).isAppearanceLightStatusBars = isDark
+                WindowCompat.getInsetsController(it, view).isAppearanceLightNavigationBars = isDark
                 view.systemUiVisibility = if (isDark) {
                     view.systemUiVisibility xor View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
                 } else {
