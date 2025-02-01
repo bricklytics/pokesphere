@@ -14,9 +14,7 @@ class SetFavoritePokemonUseCase @Inject constructor(
         args: Map<String, Any>
     ): ResultWrapper<Boolean, SetFavoritePokemonFailureFactory<ErrorDetailModel>> {
 
-        if (args.isEmpty() ||
-            !args.containsKey("name") ||
-            !args.containsKey("favorite")
+        if (args.isEmpty() || !args.containsKey("name")
         ) {
             return ResultWrapper.Error(
                 SetFavoritePokemonFailureFactory.EmptyParamsFailure()
@@ -25,8 +23,7 @@ class SetFavoritePokemonUseCase @Inject constructor(
 
         return runAsync {
             repository.setFavoritePokemon(
-                name = args["name"] as String,
-                favorite = args["favorite"] as Boolean
+                name = args["name"] as String
             ).transformError {
                 SetFavoritePokemonFailureFactory<ErrorDetailModel>().createFailure(it)
             }
