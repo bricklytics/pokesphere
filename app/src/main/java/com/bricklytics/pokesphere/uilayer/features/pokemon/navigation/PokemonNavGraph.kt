@@ -1,6 +1,5 @@
 package com.bricklytics.pokesphere.uilayer.features.pokemon.navigation
 
-import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
