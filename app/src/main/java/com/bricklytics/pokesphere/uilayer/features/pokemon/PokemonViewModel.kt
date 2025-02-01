@@ -44,11 +44,6 @@ class PokemonViewModel @Inject constructor(
         private set
 
     init {
-        loadView()
-    }
-
-    @VisibleForTesting
-    fun loadView() {
         getPokemonList()
     }
 
@@ -79,13 +74,23 @@ class PokemonViewModel @Inject constructor(
                 args = mapOf(
                     "page" to uiState.page
                 )
-            ).onSuccess {
-                val names = it.pokemonList
-                    .map { it.name }
-                    .toMutableList()
-
-                getPokemonByName(names)
+            ).onSuccess { success ->
+                if(success.pokemonList.first().id == 0) {
+                    val names = success.pokemonList
+                        .map { it.name }
+                        .toMutableList()
+                    getPokemonByName(names)
+                } else {
+                    val list = uiState.pokemonList
+                    uiState = uiState.copy(
+                        isLoading = false,
+                        pokemonList = list.apply {
+                            addAll(success.pokemonList)
+                        }
+                    )
+                }
             }.onFailure { error ->
+                uiState = uiState.copy(isLoading = false)
                 handlePokemonListError(error)
             }
         }
@@ -97,9 +102,10 @@ class PokemonViewModel @Inject constructor(
             setFavoritePokemonUseCase.fetch(
                 args = mapOf(
                     "name" to uiState.pokemonList[index].name,
-                    "favorite" to true
                 )
-            )
+            ).onSuccess {
+                getPokemonList()
+            }
         }
     }
 
