@@ -5,7 +5,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.model.PokemonOffi
 import com.google.gson.annotations.SerializedName
 
 data class PokemonDTO(
-    @SerializedName("order")
+    @SerializedName("id")
     val id: Int?,
     @SerializedName("name")
     val name: String?,

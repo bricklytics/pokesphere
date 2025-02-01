@@ -20,6 +20,7 @@ data class PokemonEntity(
 fun PokemonModel.asEntity(): PokemonEntity {
     return PokemonEntity(
         id = this.id,
+        page = this.page,
         name = this.name,
         baseExperience = this.baseExperience,
         urlDefault = this.officialArtworkModel.frontDefault,
@@ -38,6 +39,6 @@ fun PokemonEntity?.asDomain(): PokemonModel? {
             frontShiny = this.urlShinny
         ),
         baseExperience = this.baseExperience,
-        abilities = emptyList()
+        isFavorite = this.favorite,
     )
 }

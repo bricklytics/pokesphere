@@ -5,6 +5,7 @@ data class PokemonModel(
     var page: Int = 0,
     val name: String = "",
     val baseExperience: Int = 0,
+    val isFavorite: Boolean = false,
     val officialArtworkModel: PokemonOfficialArtworkModel = PokemonOfficialArtworkModel(),
     val abilities: List<PokemonAbilityModel> = emptyList(),
 )
