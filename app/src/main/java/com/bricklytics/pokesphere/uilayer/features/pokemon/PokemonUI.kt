@@ -1,5 +1,6 @@
 package com.bricklytics.pokesphere.uilayer.features.pokemon
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,7 +14,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -63,6 +63,12 @@ fun PokemonUI(
         }
     )
 
+    BackHandler {
+        navController.navigate(
+            route = AppRoutes.Home.route,
+            navOptions = NavOptions.Builder().setRestoreState(false).build()
+        )
+    }
 }
 
 @Composable

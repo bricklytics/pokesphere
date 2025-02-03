@@ -56,7 +56,6 @@ class HomeViewModel @Inject constructor(
     fun onEvent(event: HomeEvents) {
         when (event) {
             is HomeEvents.OnGetFavoritePokemon -> {
-                uiState = uiState.copy(isLoading = true)
                 getFavoritePokemon()
             }
 
@@ -68,6 +67,7 @@ class HomeViewModel @Inject constructor(
 
     @VisibleForTesting
     fun getFavoritePokemon() {
+        uiState = uiState.copy(isLoading = true)
         viewModelScope.launch(dispatcher) {
             getFavoritePokemonUseCase
                 .fetch()
