@@ -1,10 +1,19 @@
 # PokéSphere
-Welcome to the **Pokesphere**, built with modern Android development tools, following best practices for architecture, dependency injection and UI design with Jetpack Compose.
-Pokesphere is a project built by Julio Martins as a showcase of abilities in android software development. 
-It still have room for improvements and I will adopt new technologies or apply any code refinement to improve performance, maintainability and design.
+Welcome to a modern Android application crafted using cutting-edge development tools and adhering to industry best practices in architecture, dependency injection, and UI design with Jetpack Compose.
+Developed entirely in Kotlin, with Jetpack Compose as the core UI framework, this app take advantage of [PokeAPI](https://pokeapi.co/), a comprehensive REST API filled with data about the Pokémon universe.
+Created by Julio Martins as a demonstration of expertise in Android mobile software development, Pokesphere is an example of clean architecture and efficient coding practices. While the app is fully functional, there is always room for enhancement. I am committed to integrating new technologies and refining the codebase to further improve performance, maintainability, and design
 
+<table align="right" border="none">  
+    <tr>
+        <td> <img width=250px src="https://github.com/user-attachments/assets/01d7d118-1e3a-43a4-9ab2-f9a7b486f98d" /> </td>
+    </tr>
+    <tr>
+        <td> <img width=250px src="https://github.com/user-attachments/assets/22911f62-cb14-4584-8447-b81892d261d3" /> </td>
+    </tr>
+</table>
+   
 
-## 🚀 Features
+### 🚀 Features
 - **Modern UI:** Jetpack Compose with Material 3
 - **Clean Architecture:** Modular design for scalability
 - **Reactive Programming:** Kotlin Coroutines for asynchronous operations
@@ -13,9 +22,7 @@ It still have room for improvements and I will adopt new technologies or apply a
 - **Media:** Glide for image loading
 - **Custom Icons:** FontAwesome Compose integration
 
----
-
-## 🛠️ Tech Stack
+### 🛠️ Tech Stack
 
 ### **UI**
 - **Jetpack Compose** - Declarative UI toolkit
@@ -44,17 +51,14 @@ It still have room for improvements and I will adopt new technologies or apply a
 ### **Image Loading**
 - Glide with Compose integration
 
----
-
-## 📦 Project Modules
+### 📦 Project Modules
 - **UI Layer:** Jetpack Compose components
 - **Data Layer:** Repositories for API data requests and Room caching; APIDataSources for Retrofit and Network communication
 - **Domain Layer:** Data request and error transformation logic
 - **Local Data Layer:** All database files related to caching data from successful requests
 
----
 
-## 📄 License
+### 📄 License
 **© 2025 [Julio Martins](https://github.com/bricklytics)**
 
 Licensed under the Apache License, Version 2.0 (the "License");
