@@ -18,7 +18,7 @@ It still have room for improvements and I will adopt new technologies or apply a
 ## 🛠️ Tech Stack
 
 ### **UI**
-- ![Jetpack Compose](https://developer.android.com/images/jetpack/compose-graphic.svg) **Jetpack Compose** - Declarative UI toolkit
+- **Jetpack Compose** - Declarative UI toolkit
 - Material Design 3 for modern components
 - FontAwesome Compose for icons
 
@@ -33,7 +33,7 @@ It still have room for improvements and I will adopt new technologies or apply a
 - **Gson** for JSON parsing
 
 ### **Dependency Injection**
-- ![Dagger Hilt](https://dagger.dev/) **Dagger Hilt** - Simplified DI framework
+**Dagger Hilt** - Simplified DI framework
 
 ### **Asynchronous Programming**
 - Kotlin Coroutines
