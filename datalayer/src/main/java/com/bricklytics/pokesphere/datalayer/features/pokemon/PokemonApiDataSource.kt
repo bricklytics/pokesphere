@@ -5,20 +5,25 @@ import com.bricklytics.pokesphere.datalayer.base.BaseApiDataSource
 import com.bricklytics.pokesphere.datalayer.base.error.ErrorDetailDTO
 import com.bricklytics.pokesphere.datalayer.features.pokemon.model.PokemonDTO
 import com.bricklytics.pokesphere.datalayer.features.pokemon.model.PokemonsDTO
+import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
+import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
 import com.bricklytics.pokesphere.domainlayer.base.error.wrapper.ResultWrapper
+import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Inject
 
 @WorkerThread
 class PokemonApiDataSource @Inject constructor (
-    private val pokemonAPI: PokemonAPI,
-): BaseApiDataSource() {
+    private val pokemonApi: PokemonApi,
+    @AppDispatcher(AppDispatchers.IO)
+    ioDispatcher: CoroutineDispatcher,
+): BaseApiDataSource(ioDispatcher) {
     private val offset: Int = 20
 
     suspend fun getPokemon(
         name: String
     ): ResultWrapper<PokemonDTO, ErrorDetailDTO> {
         return safeApiCall {
-            pokemonAPI.getPokemon(name)
+            pokemonApi.getPokemon(name)
         }
     }
 
@@ -26,7 +31,7 @@ class PokemonApiDataSource @Inject constructor (
         page: Int
     ): ResultWrapper<PokemonsDTO, ErrorDetailDTO> {
         return safeApiCall {
-            pokemonAPI.getPokemonList(
+            pokemonApi.getPokemonList(
                 offset = page*offset,
                 limit = offset
             )
