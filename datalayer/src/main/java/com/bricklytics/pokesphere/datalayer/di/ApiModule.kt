@@ -1,7 +1,7 @@
 package com.bricklytics.pokesphere.datalayer.di
 
-import com.bricklytics.pokesphere.datalayer.features.ability.AbilityAPI
-import com.bricklytics.pokesphere.datalayer.features.pokemon.PokemonAPI
+import com.bricklytics.pokesphere.datalayer.features.ability.AbilityApi
+import com.bricklytics.pokesphere.datalayer.features.pokemon.PokemonApi
 import com.bricklytics.pokesphere.datalayer.network.provider.RetrofitProvider
 import dagger.Module
 import dagger.Provides
@@ -21,9 +21,9 @@ internal class ApiModule {
 
     @Provides
     @Singleton
-    fun providePokemonAPI() = createApi<PokemonAPI>()
+    fun providePokemonAPI() = createApi<PokemonApi>()
 
     @Provides
     @Singleton
-    fun provideAbilityAPI() = createApi<AbilityAPI>()
+    fun provideAbilityAPI() = createApi<AbilityApi>()
 }

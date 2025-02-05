@@ -5,7 +5,7 @@ import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
-interface AbilityAPI {
+interface AbilityApi {
 
     @GET("/api/v2/ability/{name}")
     suspend fun getAbility(
