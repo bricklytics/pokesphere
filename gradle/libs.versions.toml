@@ -35,6 +35,7 @@ androidTestRunner = "1.6.2"
 mockito = "5.15.2"
 mockito-kotlin = "5.4.0"
 awesomeCompose = "1.0.0"
+ktxSerialize = "1.8.0"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -45,9 +46,14 @@ dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+kotlin-serialize = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 [libraries]
+#Kotlin
+kotlin_serialize = { group="org.jetbrains.kotlinx", name="kotlinx-serialization-json", version.ref="ktxSerialize"}
+kotlin_serialize-jvm = { group="org.jetbrains.kotlinx", name="kotlinx-serialization-json-jvm", version.ref="ktxSerialize"}
+
 #Compose
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }

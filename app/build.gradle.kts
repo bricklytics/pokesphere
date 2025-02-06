@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.dagger.ksp)
+    alias(libs.plugins.kotlin.serialize)
 }
 
 android {
@@ -78,6 +79,8 @@ dependencies {
     implementation(libs.androidx.palette)
     implementation(libs.fragment.kotlin)
     implementation(libs.fragment.compose)
+    implementation(libs.kotlin.serialize)
+    implementation(libs.kotlin.serialize.jvm)
 
     // Lifecycle components
     implementation(libs.androidx.lifecycle.runtime.ktx)
