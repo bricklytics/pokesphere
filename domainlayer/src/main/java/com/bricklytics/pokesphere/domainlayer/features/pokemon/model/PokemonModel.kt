@@ -8,4 +8,9 @@ data class PokemonModel(
     val isFavorite: Boolean = false,
     val officialArtworkModel: PokemonOfficialArtworkModel = PokemonOfficialArtworkModel(),
     val abilities: List<PokemonAbilityModel> = emptyList(),
+    val height: Int = 0,
+    val weight: Int = 0,
+    val types: List<PokemonTypeModel> = emptyList(),
+    val stats: List<PokemonStatModel> = emptyList(),
+    val moves: List<PokemonMoveModel> = emptyList()
 )

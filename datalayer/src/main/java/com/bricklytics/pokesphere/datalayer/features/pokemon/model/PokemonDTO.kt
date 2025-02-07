@@ -14,7 +14,17 @@ data class PokemonDTO(
     @SerializedName("base_experience")
     val baseExperience: Int?,
     @SerializedName("sprites")
-    val sprite: PokemonSpriteDTO?
+    val sprite: PokemonSpriteDTO?,
+    @SerializedName("height")
+    val height: Int?,
+    @SerializedName("weight")
+    val weight: Int?,
+    @SerializedName("types")
+    val types: List<PokemonTypeDTO>?,
+    @SerializedName("stats")
+    val stats: List<PokemonStatDTO>?,
+    @SerializedName("moves")
+    val moves: List<PokemonMoveDTO>?
 ) {
     fun mapTo() = PokemonModel(
         id = id ?: 0,
@@ -22,6 +32,11 @@ data class PokemonDTO(
         abilities = abilities.orEmpty().map{ it.mapTo() },
         baseExperience = baseExperience ?: 0,
         officialArtworkModel = sprite?.otherSprites?.officialArtwork?.mapTo()
-            ?: PokemonOfficialArtworkModel()
+            ?: PokemonOfficialArtworkModel(),
+        height = height ?: 0,
+        weight = weight ?: 0,
+        types = types.orEmpty().map { it.mapTo() },
+        stats = stats.orEmpty().map { it.mapTo() },
+        moves = moves.orEmpty().map { it.mapTo() }
     )
 }
