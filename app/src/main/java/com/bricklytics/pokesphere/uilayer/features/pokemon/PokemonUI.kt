@@ -19,10 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import com.bricklytics.pokesphere.uilayer.R
-import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.BottomSheet
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.ButtonOrientation
 import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCard
@@ -40,7 +37,6 @@ private fun PokemonUIPreview() {
             uiState = PokemonUIState(),
             bottomSheetUiState = BottomSheetUIState(),
             onEvent = {},
-            onClickBackIcon = {}
         )
     }
 }
@@ -48,26 +44,16 @@ private fun PokemonUIPreview() {
 
 @Composable
 fun PokemonUI(
-    navController: NavController,
     viewModel: PokemonViewModel
 ) {
     PokemonUIContent(
         uiState = viewModel.uiState,
         bottomSheetUiState = viewModel.bottomSheetUiState,
         onEvent = viewModel::onEvent,
-        onClickBackIcon = {
-            navController.navigate(
-                route = AppRoutes.Home.route,
-                navOptions = NavOptions.Builder().setRestoreState(false).build()
-            )
-        }
     )
 
     BackHandler {
-        navController.navigate(
-            route = AppRoutes.Home.route,
-            navOptions = NavOptions.Builder().setRestoreState(false).build()
-        )
+        viewModel.onEvent(PokemonEvent.OnBackPressed)
     }
 }
 
@@ -76,7 +62,6 @@ fun PokemonUIContent(
     uiState: PokemonUIState,
     bottomSheetUiState: BottomSheetUIState,
     onEvent: (PokemonEvent) -> Unit,
-    onClickBackIcon: () -> Unit,
 ) {
     val colorTheme by remember { mutableStateOf(Color.White) }
 
@@ -85,7 +70,7 @@ fun PokemonUIContent(
             PokeTopBar(
                 title = stringResource(R.string.pokemon_ui_title),
                 color = colorTheme,
-                onClickIcon = onClickBackIcon
+                onClickIcon = { onEvent(PokemonEvent.OnBackPressed) }
             )
         },
         content = {

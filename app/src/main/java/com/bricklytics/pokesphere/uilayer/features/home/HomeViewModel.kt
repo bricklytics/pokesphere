@@ -6,11 +6,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
 import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.GetFavoritePokemonUseCase
+import com.bricklytics.pokesphere.uilayer.base.BaseViewModel
+import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.model.BottomBarItem
 import com.bricklytics.pokesphere.uilayer.components.utils.PokemonBitmapCustomTarget
 import com.bricklytics.pokesphere.uilayer.features.home.model.HomeEvents
@@ -27,7 +28,7 @@ class HomeViewModel @Inject constructor(
     private val getFavoritePokemonUseCase: GetFavoritePokemonUseCase,
     @AppDispatcher(AppDispatchers.IO)
     private val dispatcher: CoroutineDispatcher
-) : ViewModel() {
+) : BaseViewModel() {
 
     var uiState by mutableStateOf(HomeUIState())
         private set
@@ -36,7 +37,8 @@ class HomeViewModel @Inject constructor(
         loadView()
     }
 
-    private fun loadView() {
+    @VisibleForTesting
+    fun loadView() {
         uiState = uiState.copy(
             bottomMenuItems = listOf(
                 BottomBarItem(
@@ -48,19 +50,31 @@ class HomeViewModel @Inject constructor(
                     label = "Search"
                 ),
             ),
-            colorTheme = Color.Yellow
+            colorTheme = Color.Transparent
         )
         onEvent(HomeEvents.OnGetFavoritePokemon)
     }
 
     fun onEvent(event: HomeEvents) {
         when (event) {
+            is HomeEvents.OnBackPressed -> {
+                goToHome()
+            }
+
             is HomeEvents.OnGetFavoritePokemon -> {
                 getFavoritePokemon()
             }
 
             is HomeEvents.OnFetchPokemonImage -> {
                 getPokemonImage(context = event.context)
+            }
+
+            is HomeEvents.OnHomePressed -> {
+                goToHome()
+            }
+
+            is HomeEvents.OnSearchPokemon -> {
+                navigateTo(AppRoutes.Pokemon)
             }
         }
     }

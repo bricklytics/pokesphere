@@ -1,5 +1,6 @@
 package com.bricklytics.pokesphere.uilayer.features.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import com.bricklytics.pokesphere.uilayer.R
-import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCard
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeBottomBar
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeTopBar
@@ -36,7 +34,6 @@ private fun HomePreview() {
     MaterialTheme {
         HomeUIContent(
             onEvent = {},
-            onClickBottomBarItem = {},
             uiState = HomeUIState(
                 bottomMenuItems = listOf(
                     BottomBarItem(
@@ -56,36 +53,22 @@ private fun HomePreview() {
 
 @Composable
 fun HomeUI(
-    navController: NavController,
     viewModel: HomeViewModel
 ) {
     HomeUIContent(
         uiState = viewModel.uiState,
-        onEvent = viewModel::onEvent,
-        onClickBottomBarItem = { index ->
-            when (index) {
-                0 -> {
-                    navController.navigate(
-                        route = AppRoutes.Home.route,
-                        navOptions = NavOptions.Builder().setRestoreState(false).build()
-                    )
-                }
-
-                1 -> {
-                    navController.navigate(AppRoutes.Pokemon.route)
-                }
-
-                else -> Unit
-            }
-        }
+        onEvent = viewModel::onEvent
     )
+
+    BackHandler {
+        viewModel.onEvent(HomeEvents.OnBackPressed)
+    }
 }
 
 @Composable
 fun HomeUIContent(
     uiState: HomeUIState,
     onEvent: (HomeEvents) -> Unit,
-    onClickBottomBarItem: (Int) -> Unit,
 ) {
     Scaffold(
         topBar = {
@@ -105,7 +88,19 @@ fun HomeUIContent(
             PokeBottomBar(
                 items = uiState.bottomMenuItems,
                 color = uiState.colorTheme,
-                onClickItem = onClickBottomBarItem
+                onClickItem = { index ->
+                    when (index) {
+                        0 -> {
+                            onEvent(HomeEvents.OnHomePressed)
+                        }
+
+                        1 -> {
+                            onEvent(HomeEvents.OnSearchPokemon)
+                        }
+
+                        else -> Unit
+                    }
+                }
             )
         }
     )

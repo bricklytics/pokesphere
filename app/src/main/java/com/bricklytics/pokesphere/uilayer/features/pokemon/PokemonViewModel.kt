@@ -4,7 +4,6 @@ import androidx.annotation.VisibleForTesting
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
 import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
@@ -15,6 +14,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGe
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.PokemonGetListUseCase
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.SetFavoritePokemonUseCase
 import com.bricklytics.pokesphere.uilayer.R
+import com.bricklytics.pokesphere.uilayer.base.BaseViewModel
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.model.BottomSheetModel
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetType
@@ -35,7 +35,7 @@ class PokemonViewModel @Inject constructor(
     @AppDispatcher(AppDispatchers.IO)
     private val dispatcher: CoroutineDispatcher,
     private val resources: ResourcesProvider
-) : ViewModel() {
+) : BaseViewModel() {
 
     var uiState by mutableStateOf(PokemonUIState())
         private set
@@ -49,6 +49,10 @@ class PokemonViewModel @Inject constructor(
 
     fun onEvent(event: PokemonEvent) {
         when (event) {
+            is PokemonEvent.OnBackPressed -> {
+                navigateBack()
+            }
+
             is PokemonEvent.OnDismissBottomSheet -> {
                 bottomSheetUiState = bottomSheetUiState.copy(
                     enabled = false
