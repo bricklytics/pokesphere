@@ -64,8 +64,8 @@ fun PokeCard(
     imgUrl: String,
     label: String,
     isFavorite: Boolean = false,
-    onClick: () -> Unit = {},
-    onLongPress: () -> Unit = {}
+    onClick: (() -> Unit)? = null,
+    onLongPress: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     var likeIt by remember(isFavorite) { mutableStateOf(isFavorite) }
@@ -89,12 +89,17 @@ fun PokeCard(
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
-            .clickable(onClick = onClick)
+            .clickable(
+                enabled = onClick != null,
+                onClick = { onClick?.invoke() }
+            )
             .pointerInput(Unit) {
                 detectTapGestures(
                     onLongPress = {
-                        onLongPress()
-                        likeIt = !likeIt
+                        onLongPress?.run {
+                            this.invoke()
+                            likeIt = !likeIt
+                        }
                     }
                 )
             }
