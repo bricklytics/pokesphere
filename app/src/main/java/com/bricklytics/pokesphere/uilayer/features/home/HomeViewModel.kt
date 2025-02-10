@@ -88,7 +88,9 @@ class HomeViewModel @Inject constructor(
                 .onSuccess { success ->
                     uiState = uiState.copy(
                         isLoading = false,
-                        favImage = success.officialArtworkModel.frontDefault
+                        favImage =
+                        if (!success.isShinny) { success.officialArtworkModel.frontDefault }
+                        else { success.officialArtworkModel.frontShiny }
                     )
                 }
                 .onFailure { failure ->

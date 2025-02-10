@@ -132,7 +132,7 @@ private fun HomeContent(
         ) {
             if (uiState.favImage.isNotBlank()) {
                 PokeCard(
-                    imgUrl = uiState.favImage,
+                    primaryImgUrl = uiState.favImage,
                     label = uiState.pokemonName,
                     modifier = Modifier.align(Alignment.Center)
                 )
