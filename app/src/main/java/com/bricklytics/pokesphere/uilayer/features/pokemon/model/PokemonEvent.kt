@@ -8,4 +8,9 @@ sealed class PokemonEvent {
     data class OnLongPressCard(
         val index: Int
     ) : PokemonEvent()
+
+    data class OnDoubleTapPokeCard(
+        val index: Int,
+        val isShinny: Boolean
+    ) : PokemonEvent()
 }

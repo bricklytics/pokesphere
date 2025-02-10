@@ -5,6 +5,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.model.PokemonMode
 data class PokemonUIState(
     val isLoading: Boolean = false,
     val pokemon: PokemonModel = PokemonModel(),
+    val isShinny: Boolean = false,
     val pokemonList: MutableList<PokemonModel> = mutableListOf(),
     val page: Int = 0,
     val totalCount: Int  = 0,

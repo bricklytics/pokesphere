@@ -67,6 +67,10 @@ class PokemonViewModel @Inject constructor(
             is PokemonEvent.OnLongPressCard -> {
                 setFavoritePokemon(event.index)
             }
+
+            is PokemonEvent.OnDoubleTapPokeCard -> {
+                uiState = uiState.copy(isShinny = event.isShinny)
+            }
         }
     }
 
@@ -106,6 +110,7 @@ class PokemonViewModel @Inject constructor(
             setFavoritePokemonUseCase.fetch(
                 args = mapOf(
                     "name" to uiState.pokemonList[index].name,
+                    "isShinny" to uiState.isShinny
                 )
             ).onSuccess {
                 getPokemonList()

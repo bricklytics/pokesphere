@@ -116,17 +116,20 @@ fun PokemonGridList(
         columns = GridCells.Fixed(2),
         state = lazyGridState,
     ) {
-
         uiState.pokemonList.let {
             if (it.isNotEmpty()) {
                 items(it.size) { index ->
                     PokeCard(
                         label = "#${it[index].id} ${it[index].name}",
-                        imgUrl = it[index].officialArtworkModel.frontDefault,
+                        primaryImgUrl = it[index].officialArtworkModel.frontDefault,
+                        secondaryImgUrl = it[index].officialArtworkModel.frontShiny,
                         isFavorite = it[index].isFavorite,
-                        onClick = { },
+                        isFlipped = it[index].isShinny,
+                        onDoubleTap = { flipped ->
+                            onEvent(PokemonEvent.OnDoubleTapPokeCard(index, flipped))
+                        },
                         onLongPress = {
-                            onEvent( PokemonEvent.OnLongPressCard(index) )
+                            onEvent(PokemonEvent.OnLongPressCard(index))
                         }
                     )
                 }
