@@ -1,8 +1,9 @@
 package com.bricklytics.pokesphere.uilayer.components.features.card
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -50,7 +52,7 @@ import com.guru.fontawesomecomposelib.FaIcons
 private fun PokeCardPreview() {
     MaterialTheme {
         PokeCard(
-            imgUrl = "",
+            primaryImgUrl = "",
             label = "Pikachu",
             onClick = {}
         )
@@ -61,24 +63,33 @@ private fun PokeCardPreview() {
 @Composable
 fun PokeCard(
     modifier: Modifier = Modifier,
-    imgUrl: String,
+    primaryImgUrl: String,
+    secondaryImgUrl: String? = null,
     label: String,
     isFavorite: Boolean = false,
+    isFlipped: Boolean = false,
     onClick: (() -> Unit)? = null,
+    onDoubleTap: ((Boolean) -> Unit)? = null,
     onLongPress: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     var likeIt by remember(isFavorite) { mutableStateOf(isFavorite) }
-    var themeColor by remember { mutableStateOf(Color.Transparent ) }
+    var themeColor by remember { mutableStateOf(Color.Transparent) }
 
-    LaunchedEffect(imgUrl) {
+    LaunchedEffect(primaryImgUrl) {
         Glide.with(context)
             .asBitmap()
-            .load(imgUrl)
+            .load(primaryImgUrl)
             .into(PokemonBitmapCustomTarget { color ->
                 themeColor = color
             })
     }
+    var isFront by remember(isFlipped) { mutableStateOf(!isFlipped) }
+    val rotation by animateFloatAsState(
+        targetValue = if (isFront) 0f else 360f,
+        animationSpec = tween(durationMillis = 500),
+        label = ""
+    )
 
     Card(
         shape = RoundedCornerShape(8.dp),
@@ -89,26 +100,32 @@ fun PokeCard(
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(8.dp)
-            .clickable(
-                enabled = onClick != null,
-                onClick = { onClick?.invoke() }
-            )
             .pointerInput(Unit) {
                 detectTapGestures(
+                    onTap = {
+                        onClick?.run { invoke() }
+                    },
+                    onDoubleTap = {
+                        onDoubleTap?.run { invoke(isFront) }
+                        isFront = !isFront
+                    },
                     onLongPress = {
-                        onLongPress?.run {
-                            this.invoke()
-                            likeIt = !likeIt
-                        }
+                        likeIt = !likeIt
+                        onLongPress?.run { invoke() }
                     }
                 )
             }
     ) {
-        Box {
+        Box(
+            modifier = Modifier.graphicsLayer {
+                rotationY = rotation
+                cameraDistance = 8 * density
+            }
+        ) {
             FaIcon(
                 faIcon = FaIcons.Star,
                 tint = if (likeIt || isFavorite) colorResource(R.color.warning_down)
-                       else Color.Transparent,
+                else Color.Transparent,
                 modifier = Modifier
                     .padding(4.dp)
                     .align(Alignment.TopEnd)
@@ -117,12 +134,12 @@ fun PokeCard(
                 modifier = Modifier.align(Alignment.Center)
             ) {
                 GlideImage(
-                    model = imgUrl,
+                    model = if (rotation < 90f) primaryImgUrl else secondaryImgUrl ?: primaryImgUrl,
                     contentDescription = null,
                     modifier = Modifier
                         .padding(4.dp)
                 )
-                if(label.isNotBlank()){
+                if (label.isNotBlank()) {
                     Text(
                         text = label,
                         fontSize = 16.sp,
@@ -150,7 +167,7 @@ fun PokeCardSkeleton() {
                 .padding(8.dp)
                 .width(150.dp)
                 .height(250.dp)
-                .background(brush = brush, shape = RoundedCornerShape(8.dp),)
+                .background(brush = brush, shape = RoundedCornerShape(8.dp))
         )
     }
 }
