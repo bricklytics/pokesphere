@@ -14,7 +14,8 @@ data class PokemonEntity(
     val baseExperience: Int,
     val urlDefault: String,
     val urlShinny: String,
-    val favorite: Boolean = false
+    val favorite: Boolean = false,
+    val isShinny: Boolean = false
 )
 
 fun PokemonModel.asEntity(): PokemonEntity {
@@ -40,5 +41,6 @@ fun PokemonEntity?.asDomain(): PokemonModel? {
         ),
         baseExperience = this.baseExperience,
         isFavorite = this.favorite,
+        isShinny = this.isShinny
     )
 }
