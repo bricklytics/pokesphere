@@ -23,7 +23,8 @@ class SetFavoritePokemonUseCase @Inject constructor(
 
         return runAsync {
             repository.setFavoritePokemon(
-                name = args["name"] as String
+                name = args["name"] as String,
+                isShinny = args["isShinny"] as Boolean
             ).transformError {
                 SetFavoritePokemonFailureFactory<ErrorDetailModel>().createFailure(it)
             }

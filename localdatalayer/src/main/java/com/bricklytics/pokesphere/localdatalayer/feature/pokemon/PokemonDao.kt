@@ -28,11 +28,11 @@ interface PokemonDao {
         favorite: Boolean
     )
 
-    @Query("UPDATE PokemonEntity SET favorite = 0 WHERE favorite == 1")
+    @Query("UPDATE PokemonEntity SET favorite = 0, isShinny = 0 WHERE favorite == 1")
     suspend fun clearOldFavoritePokemon()
 
-    @Query("UPDATE PokemonEntity SET favorite = 1 WHERE name == :name")
-    suspend fun setFavoritePokemon(name: String)
+    @Query("UPDATE PokemonEntity SET favorite = 1, isShinny = :isShinny WHERE name == :name")
+    suspend fun setFavoritePokemon(name: String, isShinny: Boolean)
 
     @Query("SELECT * FROM PokemonEntity WHERE favorite == 1")
     suspend fun getFavoritePokemon(): PokemonEntity

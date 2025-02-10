@@ -68,11 +68,12 @@ class PokemonRepositoryImpl @Inject constructor(
     }
 
     override suspend fun setFavoritePokemon(
-        name: String
+        name: String,
+        isShinny: Boolean
     ): ResultWrapper<Boolean, ErrorDetailModel> {
         return runCatching {
             pokemonDao.clearOldFavoritePokemon()
-            pokemonDao.setFavoritePokemon(name)
+            pokemonDao.setFavoritePokemon(name, isShinny)
         }.fold(
             onSuccess = {
                 ResultWrapper.Success(data = true)
