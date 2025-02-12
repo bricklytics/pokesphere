@@ -24,6 +24,7 @@ import com.bricklytics.pokesphere.uilayer.components.features.card.PokeCard
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeBottomBar
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.PokeTopBar
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.model.BottomBarItem
+import com.bricklytics.pokesphere.uilayer.features.home.BottomBarMenuButtons.Companion.isKindOf
 import com.bricklytics.pokesphere.uilayer.features.home.model.HomeEvents
 import com.bricklytics.pokesphere.uilayer.features.home.model.HomeUIState
 import com.guru.fontawesomecomposelib.FaIcons
@@ -89,15 +90,9 @@ fun HomeUIContent(
                 items = uiState.bottomMenuItems,
                 color = uiState.colorTheme,
                 onClickItem = { index ->
-                    when (index) {
-                        0 -> {
-                            onEvent(HomeEvents.OnHomePressed)
-                        }
-
-                        1 -> {
-                            onEvent(HomeEvents.OnSearchPokemon)
-                        }
-
+                    when (index.isKindOf()) {
+                        BottomBarMenuButtons.Home -> { onEvent(HomeEvents.OnHomePressed) }
+                        BottomBarMenuButtons.Search -> { onEvent(HomeEvents.OnSearchPokemon) }
                         else -> Unit
                     }
                 }
@@ -137,6 +132,20 @@ private fun HomeContent(
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
+        }
+    }
+}
+
+enum class BottomBarMenuButtons(
+    val index: Int,
+) {
+    Home(0),
+    Search(1),
+    Undefined(-1);
+
+    companion object {
+        fun Int.isKindOf(): BottomBarMenuButtons {
+            return entries.firstOrNull{ it.index == this } ?: Undefined
         }
     }
 }
