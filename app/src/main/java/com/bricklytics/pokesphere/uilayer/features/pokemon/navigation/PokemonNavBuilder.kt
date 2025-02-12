@@ -14,11 +14,11 @@ fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
     composable(AppRoutes.Pokemon.route) { bsEntry ->
         val viewModel = hiltViewModel<PokemonViewModel>()
         viewModel.setNavManager(
-                appNavigationManager {
-                    navControler = navController
-                    backStackEntry = bsEntry
-                }
-            )
+            appNavigationManager {
+                navControler = navController
+                backStackEntry = bsEntry
+            }
+        )
 
         PokemonUI(viewModel = viewModel)
     }
