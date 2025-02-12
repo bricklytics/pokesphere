@@ -21,4 +21,5 @@
     <color name="negative_pure" category="background-color">#F5456E</color>
     <color name="negative_down" category="background-color">#F27592</color>
     <color name="negative_up" category="background-color">#FFCBD4</color>
+    <color name="main_theme" category="background-color">#E95350</color>
 </resources>
