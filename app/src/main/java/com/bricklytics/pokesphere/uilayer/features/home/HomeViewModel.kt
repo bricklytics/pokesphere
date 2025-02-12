@@ -10,7 +10,9 @@ import androidx.lifecycle.viewModelScope
 import com.bricklytics.pokesphere.datalayer.network.AppDispatcher
 import com.bricklytics.pokesphere.datalayer.network.AppDispatchers
 import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.GetFavoritePokemonUseCase
+import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.base.BaseViewModel
+import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.components.features.navigationbar.model.BottomBarItem
 import com.bricklytics.pokesphere.uilayer.components.utils.PokemonBitmapCustomTarget
@@ -26,6 +28,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getFavoritePokemonUseCase: GetFavoritePokemonUseCase,
+    private val resources: ResourcesProvider,
     @AppDispatcher(AppDispatchers.IO)
     private val dispatcher: CoroutineDispatcher
 ) : BaseViewModel() {
@@ -50,7 +53,7 @@ class HomeViewModel @Inject constructor(
                     label = "Search"
                 ),
             ),
-            colorTheme = Color.Transparent
+            colorTheme = Color(resources.getColor(R.color.main_theme))
         )
         onEvent(HomeEvents.OnGetFavoritePokemon)
     }
