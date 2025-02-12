@@ -12,4 +12,6 @@ class ResourcesProvider(
 
     fun getString(resId: Int, vararg formatArgs: Any): String =
         context.getString(resId, *formatArgs)
+
+    fun getColor(resId: Int): Int = context.getColor(resId)
 }
