@@ -1,5 +1,8 @@
 package com.bricklytics.pokesphere.domainlayer.features.pokemon.model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class PokemonModel(
     val id: Int = 0,
     var page: Int = 0,
