@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.dagger.ksp)
+    alias(libs.plugins.kotlin.serialize)
 }
 
 android {
@@ -35,6 +36,8 @@ dependencies {
     // Core Android dependencies
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
+    implementation(libs.kotlin.serialize)
+    implementation(libs.kotlin.serialize.jvm)
 
     // Unit testing
     testImplementation(libs.junit)
