@@ -14,11 +14,15 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
+import androidx.compose.ui.unit.dp
 import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.BottomSheet
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.ButtonOrientation
@@ -105,6 +109,9 @@ fun PokemonGridList(
     onEvent: (PokemonEvent) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
+    var imagePosition by remember { mutableStateOf(IntOffset.Zero) }
+    var imageSize by remember { mutableStateOf(0.dp) }
+    val localDensity = LocalDensity.current
 
     LaunchedEffect(lazyGridState.canScrollForward) {
         if (!lazyGridState.canScrollForward && lazyGridState.canScrollBackward && !uiState.isLoading) {
@@ -126,7 +133,7 @@ fun PokemonGridList(
                         isFavorite = it[index].isFavorite,
                         isFlipped = it[index].isShinny,
                         onClick = {
-                            onEvent(PokemonEvent.OnTapPokeCard(index))
+                            onEvent(PokemonEvent.OnTapPokeCard(it[index].name))
                         },
                         onDoubleTap = { flipped ->
                             onEvent(PokemonEvent.OnDoubleTapPokeCard(index, flipped))

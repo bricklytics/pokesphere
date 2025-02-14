@@ -5,8 +5,8 @@ sealed class PokemonEvent {
     data object OnDismissBottomSheet : PokemonEvent()
     data object OnDrainedList : PokemonEvent()
 
-    data class OnTapPokeCard (
-        val index: Int
+    data class OnTapPokeCard(
+        val name: String
     ) : PokemonEvent()
 
     data class OnLongPressCard(

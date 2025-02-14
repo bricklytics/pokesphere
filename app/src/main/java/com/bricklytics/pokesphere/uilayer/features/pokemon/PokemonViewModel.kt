@@ -77,7 +77,7 @@ class PokemonViewModel @Inject constructor(
             is PokemonEvent.OnTapPokeCard -> {
                 navigateTo(
                     appRoutes = AppRoutes.PokemonDetails,
-                    args = Json.encodeToString(uiState.pokemonList[event.index].name)
+                    args = Json.encodeToString(event.name)
                 )
             }
         }
