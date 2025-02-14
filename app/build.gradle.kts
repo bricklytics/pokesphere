@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation)
     debugImplementation(libs.androidx.ui.test.manifest)
 
     // Coroutine support
