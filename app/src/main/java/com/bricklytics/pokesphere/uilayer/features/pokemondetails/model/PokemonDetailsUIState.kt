@@ -5,7 +5,8 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.model.PokemonMode
 
 data class PokemonDetailsUIState(
     val isLoading: Boolean = false,
-    val colorTheme: Color = Color.Transparent,
+    val primaryColorTheme: Color = Color.Transparent,
+    val secondaryColorTheme: Color = Color.Transparent,
     val pokemon: PokemonModel = PokemonModel(),
-    val pokemonName: String = ""
+    val pokemonName: String = "",
 )

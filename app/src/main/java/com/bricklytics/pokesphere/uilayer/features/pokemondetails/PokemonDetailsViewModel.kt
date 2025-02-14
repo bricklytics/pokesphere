@@ -74,16 +74,19 @@ class PokemonDetailsViewModel @Inject constructor(
     @VisibleForTesting
     fun loadPokemonColorTheme(context: Context) {
         viewModelScope.launch(dispatcher) {
-            val img = if (uiState.pokemon.isShinny) {
-                uiState.pokemon.officialArtworkModel.frontShiny
-            } else {
-                uiState.pokemon.officialArtworkModel.frontDefault
-            }
+            val primaryImg = uiState.pokemon.officialArtworkModel.frontDefault
             Glide.with(context)
                 .asBitmap()
-                .load(img)
+                .load(primaryImg)
                 .into(PokemonBitmapCustomTarget { color ->
-                    uiState = uiState.copy(colorTheme = color)
+                    uiState = uiState.copy(primaryColorTheme = color)
+                })
+            val secondaryImg = uiState.pokemon.officialArtworkModel.frontShiny
+            Glide.with(context)
+                .asBitmap()
+                .load(secondaryImg)
+                .into(PokemonBitmapCustomTarget { color ->
+                    uiState = uiState.copy(secondaryColorTheme = color)
                 })
         }
     }
