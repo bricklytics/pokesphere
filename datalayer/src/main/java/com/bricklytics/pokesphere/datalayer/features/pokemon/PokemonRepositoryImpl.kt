@@ -15,13 +15,14 @@ class PokemonRepositoryImpl @Inject constructor(
     private val pokemonDao: PokemonDao
 ) : PokemonRepository {
     override suspend fun getPokemon(
-        name: String
+        name: String,
+        invalidateCache: Boolean
     ): ResultWrapper<PokemonModel, ErrorDetailModel> {
         val daoData = pokemonDao
             .getPokemon(name)
             .asDomain()
 
-        if (daoData != null) {
+        if (daoData != null && !invalidateCache) {
             return ResultWrapper.Success(data = daoData)
         }
 
@@ -30,6 +31,8 @@ class PokemonRepositoryImpl @Inject constructor(
             .transformSuccess { it.mapTo() }
             .transformError { it.mapTo() }
             .onSuccess {
+                if(invalidateCache) return@onSuccess
+
                 pokemonDao.updatePokemon(
                     name = it.name,
                     id = it.id,

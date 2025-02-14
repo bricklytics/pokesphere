@@ -8,7 +8,8 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.model.PokemonsMod
 interface PokemonRepository {
 
     suspend fun getPokemon(
-        name: String
+        name: String,
+        invalidateCache: Boolean
     ): ResultWrapper<PokemonModel, ErrorDetailModel>
 
     suspend fun getPokemonList(

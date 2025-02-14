@@ -20,8 +20,10 @@ class PokemonGetDataUseCase @Inject constructor(
                     PokemonGetDataFailureFactory.EmptyParamsFailure()
                 )
             }
+
             repository.getPokemon(
-                name = args["name"] as String
+                name = args["name"] as String,
+                invalidateCache = args["invalidateCache"] as? Boolean ?: false
             ).transformError {
                 PokemonGetDataFailureFactory<ErrorDetailModel>().createFailure(it)
             }
