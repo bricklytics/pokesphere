@@ -16,6 +16,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.SetFavori
 import com.bricklytics.pokesphere.uilayer.R
 import com.bricklytics.pokesphere.uilayer.base.BaseViewModel
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
+import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.components.features.bottomsheet.model.BottomSheetModel
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetType
 import com.bricklytics.pokesphere.uilayer.features.pokemon.model.BottomSheetUIState
@@ -25,6 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,6 +72,13 @@ class PokemonViewModel @Inject constructor(
 
             is PokemonEvent.OnDoubleTapPokeCard -> {
                 uiState = uiState.copy(isShinny = event.isShinny)
+            }
+
+            is PokemonEvent.OnTapPokeCard -> {
+                navigateTo(
+                    appRoutes = AppRoutes.PokemonDetails,
+                    args = Json.encodeToString(uiState.pokemonList[event.index].name)
+                )
             }
         }
     }

@@ -14,4 +14,7 @@
     <string name="pokemon_bottom_sheet_subtitle">Looks like something went wrong…</string>
     <string name="pokemon_bottom_sheet_description">Wait a little and try again, right!?</string>
 
+    <!-- PokemonDetailsUI -->
+    <string name="pokemon_details_title">Details</string>
+
 </resources>

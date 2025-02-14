@@ -125,6 +125,9 @@ fun PokemonGridList(
                         secondaryImgUrl = it[index].officialArtworkModel.frontShiny,
                         isFavorite = it[index].isFavorite,
                         isFlipped = it[index].isShinny,
+                        onClick = {
+                            onEvent(PokemonEvent.OnTapPokeCard(index))
+                        },
                         onDoubleTap = { flipped ->
                             onEvent(PokemonEvent.OnDoubleTapPokeCard(index, flipped))
                         },
