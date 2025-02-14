@@ -9,6 +9,7 @@ import com.bricklytics.pokesphere.domainlayer.features.pokemon.usecase.SetFavori
 import com.bricklytics.pokesphere.uilayer.base.ResourcesProvider
 import com.bricklytics.pokesphere.uilayer.features.home.HomeViewModel
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
+import com.bricklytics.pokesphere.uilayer.features.pokemondetails.PokemonDetailsViewModel
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -24,9 +25,11 @@ internal class ViewModelModule {
     @ViewModelScoped
     fun provideHomeViewModel(
         getFavoritePokemonUseCase: GetFavoritePokemonUseCase,
+        resources: ResourcesProvider,
         @AppDispatcher(AppDispatchers.IO) dispatcher: CoroutineDispatcher,
     ) : HomeViewModel = HomeViewModel(
         getFavoritePokemonUseCase = getFavoritePokemonUseCase,
+        resources = resources,
         dispatcher = dispatcher
     )
 
@@ -43,6 +46,16 @@ internal class ViewModelModule {
         getPokemonListUseCase = getPokemonListUseCase,
         setFavoritePokemonUseCase = setFavoritePokemonUseCase,
         resources = resources,
+        dispatcher = dispatcher
+    )
+
+    @Provides
+    @ViewModelScoped
+    fun providePokemonDetailsViewModel(
+        getPokemonDataUseCase: PokemonGetDataUseCase,
+        @AppDispatcher(AppDispatchers.IO) dispatcher: CoroutineDispatcher,
+    ): PokemonDetailsViewModel = PokemonDetailsViewModel(
+        getPokemonDataUseCase = getPokemonDataUseCase,
         dispatcher = dispatcher
     )
 }
