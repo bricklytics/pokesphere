@@ -1,11 +1,9 @@
 package com.bricklytics.pokesphere.uilayer.base.navigation
 
-import android.os.Bundle
+import android.net.Uri
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.navOptions
-import kotlinx.serialization.json.Json
 import kotlin.properties.Delegates
 
 class AppNavigationManager {
@@ -62,18 +60,21 @@ class AppNavigationManager {
 
     fun navigateTo(
         appRoutes: AppRoutes,
-        args: Bundle
+        args: String
     ) {
-        val json = Json.encodeToString(args)
-
+        val encodedJson = Uri.encode(args)
         navController.navigate(
-            route = appRoutes.route + "/$json",
+            route = "${appRoutes.route}/$encodedJson",
             navOptions = navOptions {
                 launchSingleTop = _launchSingleTop
                 restoreState = _restoreState
             }
         )
-        NavOptions.Builder()
+    }
+
+    fun getArgs(key: String): String {
+        val encodedJson = backStackEntry.arguments?.getString(key) ?: ""
+        return Uri.decode(encodedJson)
     }
 
     class Builder {

@@ -1,6 +1,5 @@
 package com.bricklytics.pokesphere.uilayer.base
 
-import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppNavigationManager
 import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
@@ -15,6 +14,10 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         this.navigationManager = appNavigationManager
     }
 
+    fun getArgs(key: String): String {
+        return navigationManager.getArgs(key)
+    }
+
     fun navigateBack() {
         navigationManager.navigateBack()
     }
@@ -27,7 +30,7 @@ open class BaseViewModel @Inject constructor() : ViewModel() {
         navigationManager.navigateTo(appRoutes)
     }
 
-    fun navigateTo(appRoutes: AppRoutes, args: Bundle) {
+    fun navigateTo(appRoutes: AppRoutes, args: String) {
         navigationManager.navigateTo(appRoutes, args)
     }
 }
