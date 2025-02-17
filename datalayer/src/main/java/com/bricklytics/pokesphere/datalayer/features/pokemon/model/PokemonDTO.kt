@@ -33,8 +33,8 @@ data class PokemonDTO(
         baseExperience = baseExperience ?: 0,
         officialArtworkModel = sprite?.otherSprites?.officialArtwork?.mapTo()
             ?: PokemonOfficialArtworkModel(),
-        height = height ?: 0,
-        weight = weight ?: 0,
+        height = height?.div(10.0) ?: 0.0,
+        weight = weight?.div(10.0) ?: 0.0,
         types = types.orEmpty().map { it.mapTo() },
         stats = stats.orEmpty().map { it.mapTo() },
         moves = moves.orEmpty().map { it.mapTo() }
