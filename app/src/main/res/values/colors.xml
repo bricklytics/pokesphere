@@ -13,6 +13,7 @@
     <color name="positive_pure" category="background-color">#2BC150</color>
     <color name="positive_down" category="background-color">#7ADC94</color>
     <color name="positive_up" category="background-color">#D0FFD4</color>
+    <color name="main_theme" category="background-color">#E95350</color>
     <color name="warning_deep" category="background-color">#FF8A14</color>
     <color name="warning_pure" category="background-color">#FFA347</color>
     <color name="warning_down" category="background-color">#FFBD7A</color>
@@ -21,5 +22,32 @@
     <color name="negative_pure" category="background-color">#F5456E</color>
     <color name="negative_down" category="background-color">#F27592</color>
     <color name="negative_up" category="background-color">#FFCBD4</color>
-    <color name="main_theme" category="background-color">#E95350</color>
+    <color name="experience_points" category="background-color">#771B8B</color>
+    <color name="health_points" category="background-color">#3D983F</color>
+    <color name="attack_points" category="background-color">#AC1F39</color>
+    <color name="special_attack_points" category="background-color">#C11399</color>
+    <color name="defense_points" category="background-color">#4659CD</color>
+    <color name="special_defense_points" category="background-color">#13B6DF</color>
+    <color name="speed_points" category="background-color">#D1BD15</color>
+
+    <!--Pokemon Types -->
+    <color name="pokemon_type_normal" category="background-color">#ACAD99</color>
+    <color name="pokemon_type_fighting" category="background-color">#C45D4C</color>
+    <color name="pokemon_type_flying" category="background-color">#90AAD7</color>
+    <color name="pokemon_type_poison" category="background-color">#B369AF</color>
+    <color name="pokemon_type_ground" category="background-color">#CEB250</color>
+    <color name="pokemon_type_rock" category="background-color">#BAA85E</color>
+    <color name="pokemon_type_bug" category="background-color">#ACC23E</color>
+    <color name="pokemon_type_ghost" category="background-color">#816DB6</color>
+    <color name="pokemon_type_steel" category="background-color">#9FA9AF</color>
+    <color name="pokemon_type_fire" category="background-color">#E87A3D</color>
+    <color name="pokemon_type_water" category="background-color">#639CE4</color>
+    <color name="pokemon_type_grass" category="background-color">#82C95B</color>
+    <color name="pokemon_type_electric" category="background-color">#E7C536</color>
+    <color name="pokemon_type_psychic" category="background-color">#E96C95</color>
+    <color name="pokemon_type_ice" category="background-color">#81CFD7</color>
+    <color name="pokemon_type_dragon" category="background-color">#8572C8</color>
+    <color name="pokemon_type_dark" category="background-color">#79726B</color>
+    <color name="pokemon_type_fairy" category="background-color">#E8B0EB</color>
+    <color name="pokemon_type_unknown" category="background-color">#D7DAEC</color>
 </resources>

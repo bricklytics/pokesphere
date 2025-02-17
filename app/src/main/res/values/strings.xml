@@ -16,5 +16,14 @@
 
     <!-- PokemonDetailsUI -->
     <string name="pokemon_details_title">Details</string>
+    <string name="pokemon_details_weight_label">weight (kg)</string>
+    <string name="pokemon_details_height_label">height (m) </string>
+    <string name="pokemon_details_stats_abbrev_hp">HP</string>
+    <string name="pokemon_details_stats_abbrev_attack">ATK</string>
+    <string name="pokemon_details_stats_abbrev_defense">DEF</string>
+    <string name="pokemon_details_stats_abbrev_special_attack">S-ATK</string>
+    <string name="pokemon_details_stats_abbrev_special_defense">S-DEF</string>
+    <string name="pokemon_details_stats_abbrev_speed">SPD</string>
+    <string name="pokemon_details_stats_abbrev_xp">XP</string>
 
 </resources>
