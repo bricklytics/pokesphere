@@ -1,7 +1,5 @@
 package com.bricklytics.pokesphere.uilayer.features.pokemondetails.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.core.tween
 import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -22,13 +20,7 @@ fun NavGraphBuilder.pokemonDetailsNavigation(navController: NavController) {
             navArgument(AppRoutes.PokemonDetails.POKEMON_NAME) {
                this.type = NavType.StringType
             }
-        ),
-        enterTransition = {
-            this.slideIntoContainer(
-                towards = AnimatedContentTransitionScope.SlideDirection.Up,
-                animationSpec = tween(1000),
-            )
-        }
+        )
     ) { bsEntry ->
         requireNotNull(bsEntry.arguments)
 
