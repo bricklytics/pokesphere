@@ -95,10 +95,7 @@ fun PokeCard(
         shape = RoundedCornerShape(8.dp),
         border = BorderStroke(2.dp, Color.White),
         modifier = modifier
-            .background(
-                color = themeColor,
-                shape = RoundedCornerShape(8.dp)
-            )
+            .background(color = themeColor)
             .padding(8.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
