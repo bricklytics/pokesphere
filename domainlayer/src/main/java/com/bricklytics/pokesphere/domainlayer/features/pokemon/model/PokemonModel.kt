@@ -9,7 +9,7 @@ data class PokemonModel(
     val name: String = "",
     val baseExperience: Int = 0,
     val isFavorite: Boolean = false,
-    val isShinny: Boolean = false,
+    var isShinny: Boolean = false,
     val officialArtworkModel: PokemonOfficialArtworkModel = PokemonOfficialArtworkModel(),
     val abilities: List<PokemonAbilityModel> = emptyList(),
     val height: Double = 0.0,

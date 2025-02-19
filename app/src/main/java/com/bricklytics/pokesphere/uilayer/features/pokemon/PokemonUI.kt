@@ -104,11 +104,20 @@ fun PokemonGridList(
     uiState: PokemonUIState,
     onEvent: (PokemonEvent) -> Unit,
 ) {
-    val lazyGridState = rememberLazyGridState()
+    val lazyGridState = rememberLazyGridState(
+        initialFirstVisibleItemIndex = uiState.scrollPosition,
+        initialFirstVisibleItemScrollOffset = uiState.scrollOffset
+    )
 
     LaunchedEffect(lazyGridState.canScrollForward) {
         if (!lazyGridState.canScrollForward && lazyGridState.canScrollBackward && !uiState.isLoading) {
             onEvent(PokemonEvent.OnDrainedList)
+        }
+    }
+
+    LaunchedEffect(uiState.scrollPosition, uiState.scrollOffset) {
+        if(uiState.scrollPosition > 0 || uiState.scrollOffset > 0) {
+            lazyGridState.scrollToItem(uiState.scrollPosition, uiState.scrollOffset)
         }
     }
 
@@ -126,13 +135,19 @@ fun PokemonGridList(
                         isFavorite = it[index].isFavorite,
                         isFlipped = it[index].isShinny,
                         onClick = {
-                            onEvent(PokemonEvent.OnTapPokeCard(it[index].name))
+                            onEvent(
+                                PokemonEvent.OnTapPokeCard(
+                                    name = it[index].name,
+                                    scrollPosition = lazyGridState.firstVisibleItemIndex,
+                                    scrollOffset = lazyGridState.firstVisibleItemScrollOffset
+                                )
+                            )
                         },
                         onDoubleTap = { flipped ->
                             onEvent(PokemonEvent.OnDoubleTapPokeCard(index, flipped))
                         },
-                        onLongPress = {
-                            onEvent(PokemonEvent.OnLongPressCard(index))
+                        onLongPress = { wasFavorited ->
+                            onEvent(PokemonEvent.OnLongPressCard(index, wasFavorited))
                         }
                     )
                 }
