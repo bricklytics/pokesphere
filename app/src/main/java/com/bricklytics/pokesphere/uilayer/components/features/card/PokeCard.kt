@@ -70,10 +70,10 @@ fun PokeCard(
     isFlipped: Boolean = false,
     onClick: (() -> Unit)? = null,
     onDoubleTap: ((Boolean) -> Unit)? = null,
-    onLongPress: (() -> Unit)? = null
+    onLongPress: ((Boolean) -> Unit)? = null
 ) {
     val context = LocalContext.current
-    var likeIt by remember(isFavorite) { mutableStateOf(isFavorite) }
+    var wasLiked by remember(isFavorite) { mutableStateOf(isFavorite) }
     var themeColor by remember { mutableStateOf(Color.Transparent) }
 
     LaunchedEffect(primaryImgUrl) {
@@ -105,10 +105,11 @@ fun PokeCard(
                     onDoubleTap = {
                         onDoubleTap?.run { invoke(isFront) }
                         isFront = !isFront
+                        wasLiked = if(isFavorite) !wasLiked else wasLiked
                     },
                     onLongPress = {
-                        likeIt = !likeIt
-                        onLongPress?.run { invoke() }
+                        wasLiked = !wasLiked
+                        onLongPress?.run { invoke(wasLiked) }
                     }
                 )
             }
@@ -121,7 +122,7 @@ fun PokeCard(
         ) {
             FaIcon(
                 faIcon = FaIcons.Star,
-                tint = if (likeIt || isFavorite) colorResource(R.color.warning_down)
+                tint = if (wasLiked) colorResource(R.color.warning_down)
                 else Color.Transparent,
                 modifier = Modifier
                     .padding(4.dp)
@@ -130,12 +131,21 @@ fun PokeCard(
             Column(
                 modifier = Modifier.align(Alignment.Center)
             ) {
-                GlideImage(
-                    model = if (rotation < 90f) primaryImgUrl else secondaryImgUrl ?: primaryImgUrl,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(4.dp)
-                )
+                if (isFront) {
+                    GlideImage(
+                        model = primaryImgUrl,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
+                } else {
+                    GlideImage(
+                        model = secondaryImgUrl ?: primaryImgUrl,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(4.dp)
+                    )
+                }
                 if (label.isNotBlank()) {
                     Text(
                         text = label,
