@@ -18,7 +18,8 @@ interface PokemonRepository {
 
     suspend fun setFavoritePokemon(
         name: String,
-        isShinny: Boolean
+        isShinny: Boolean,
+        isFavorite: Boolean
     ): ResultWrapper<Boolean, ErrorDetailModel>
 
     suspend fun getFavoritePokemon(): ResultWrapper<PokemonModel, ErrorDetailModel>
