@@ -16,6 +16,7 @@
 
     <!-- PokemonDetailsUI -->
     <string name="pokemon_details_title">Details</string>
+    <string name="pokemon_details_moves">Moves</string>
     <string name="pokemon_details_weight_label">weight (kg)</string>
     <string name="pokemon_details_height_label">height (m) </string>
     <string name="pokemon_details_stats_abbrev_hp">HP</string>

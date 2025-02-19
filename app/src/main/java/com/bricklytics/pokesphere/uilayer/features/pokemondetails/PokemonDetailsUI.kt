@@ -1,34 +1,51 @@
 package com.bricklytics.pokesphere.uilayer.features.pokemondetails
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDp
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.core.updateTransition
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -107,47 +124,62 @@ fun PokemonDetailsContent(
     uiState: PokemonDetailsUIState,
     onEvent: (PokemonDetailsEvents) -> Unit
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(paddingValues)
+    Box(
+        modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-        ) {
-            PokemonDetailHeader(
-                uiState = uiState,
-                modifier = Modifier
-                    .background(
-                        brush = gradient(
-                            isShinny = uiState.pokemon.isShinny,
-                            colors = listOf(
-                                uiState.primaryColorTheme,
-                                uiState.secondaryColorTheme
-                            )
-                        ),
-                        shape = RoundedCornerShape(
-                            bottomStart = 48.dp,
-                            bottomEnd = 48.dp
-                        )
-                    )
-                    .align(Alignment.TopCenter)
-                    .fillMaxWidth()
-            )
-        }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(16.dp)
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
         ) {
-            PokemonRowTypes(
-                uiState = uiState,
-                modifier = Modifier.padding(vertical = 16.dp)
-            )
-            PokemonStats(
-                uiState = uiState,
-            )
+            Box(
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                PokemonDetailHeader(
+                    uiState = uiState,
+                    modifier = Modifier
+                        .background(
+                            brush = gradient(
+                                isShinny = uiState.pokemon.isShinny,
+                                colors = listOf(
+                                    uiState.primaryColorTheme,
+                                    uiState.secondaryColorTheme
+                                )
+                            ),
+                            shape = RoundedCornerShape(
+                                bottomStart = 48.dp,
+                                bottomEnd = 48.dp
+                            )
+                        )
+                        .align(Alignment.TopCenter)
+                        .fillMaxWidth()
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                PokemonRowTypes(
+                    uiState = uiState,
+                    modifier = Modifier.padding(vertical = 8.dp)
+                )
+                PokemonStats(
+                    uiState = uiState,
+                )
+            }
         }
+
+        PokemonMoveList(
+            uiState = uiState,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .align(Alignment.BottomCenter)
+                .fillMaxWidth()
+        )
     }
 }
 
@@ -230,25 +262,32 @@ private fun PokemonRowTypes(
                 modifier = Modifier
                     .background(
                         color = colorType,
-                        shape = RoundedCornerShape(32.dp)
+                        shape = RoundedCornerShape(16.dp)
                     )
+                    .requiredHeight(32.dp)
             ) {
                 Box(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(2.dp)
                         .border(
                             border = BorderStroke(width = 2.dp, color = Color.White),
-                            shape = RoundedCornerShape(32.dp)
+                            shape = RoundedCornerShape(16.dp)
                         )
                 ) {
                     Text(
                         text = item.type,
-                        color = colorType.toArgb().getContrastingColor(),
+                        style = TextStyle(
+                            fontSize = 16.sp,
+                            fontFamily = psFontFamily,
+                            fontWeight = FontWeight.Medium,
+                            color = colorType.toArgb().getContrastingColor()
+                        ),
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(horizontal = 8.dp, vertical = 4.dp)
+                            .padding(2.dp)
                             .width(64.dp)
+                            .align(Alignment.Center)
                     )
                 }
             }
@@ -281,7 +320,7 @@ private fun PokemonStats(
                     fontFamily = psFontFamily,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
-                ) 
+                )
                 Text(
                     text = stringResource(R.string.pokemon_details_weight_label),
                     fontSize = 12.sp,
@@ -309,56 +348,139 @@ private fun PokemonStats(
                 )
             }
         }
-        
+
+        BaseStatus(
+            stat = stringResource(R.string.pokemon_details_stats_abbrev_xp),
+            baseStat = uiState.pokemon.baseExperience
+        )
         uiState.pokemon.stats.forEach { item ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .requiredHeight(24.dp)
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    text = item.stat.abbreviate(),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Normal,
-                    fontFamily = psFontFamily,
-                    modifier = Modifier
-                        .padding(end = 8.dp)
-                        .weight(1f),
-                )
-                Box(
-                    modifier = Modifier
-                        .background(
-                            color = colorResource(R.color.light_deep),
-                            shape = RoundedCornerShape(16.dp)
-                        )
-                        .weight(3f)
-                        .requiredHeight(16.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .background(
-                                color = colorResource(item.stat.colorPokemonStatsResource()),
-                                shape = RoundedCornerShape(16.dp)
-                            )
-                            .fillMaxHeight()
-                            .width(item.baseStat.dp)
-                    )
-                }
-            }
+            BaseStatus(
+                stat = item.stat,
+                baseStat = item.baseStat
+            )
         }
     }
 }
+
 @Composable
-private fun String.abbreviate(): String {
-    return when(PokemonStatsType.fromLabel(this)){
-        PokemonStatsType.Xp -> stringResource(R.string.pokemon_details_stats_abbrev_xp)
-        PokemonStatsType.Hp -> stringResource(R.string.pokemon_details_stats_abbrev_hp)
-        PokemonStatsType.Attack -> stringResource(R.string.pokemon_details_stats_abbrev_attack)
-        PokemonStatsType.Defense -> stringResource(R.string.pokemon_details_stats_abbrev_defense)
-        PokemonStatsType.SpecialAttack -> stringResource(R.string.pokemon_details_stats_abbrev_special_attack)
-        PokemonStatsType.SpecialDefense -> stringResource(R.string.pokemon_details_stats_abbrev_special_defense)
-        PokemonStatsType.Speed -> stringResource(R.string.pokemon_details_stats_abbrev_speed)
+private fun BaseStatus(
+    stat: String,
+    baseStat: Int,
+) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(vertical = 8.dp)
+            .requiredHeight(24.dp)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = stringResource(stat.lowercase().convertToResource()),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            fontFamily = psFontFamily,
+            modifier = Modifier
+                .padding(end = 8.dp)
+                .weight(1f),
+        )
+        Box(
+            modifier = Modifier
+                .background(
+                    color = colorResource(R.color.light_deep),
+                    shape = RoundedCornerShape(16.dp)
+                )
+                .weight(3f)
+                .requiredHeight(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .background(
+                        color = colorResource(stat.lowercase().colorPokemonStatsResource()),
+                        shape = RoundedCornerShape(16.dp)
+                    )
+                    .fillMaxHeight()
+                    .width(baseStat.dp)
+            )
+        }
+    }
+}
+
+private fun String.convertToResource(): Int {
+    return when (PokemonStatsType.fromLabel(this)) {
+        PokemonStatsType.Xp -> R.string.pokemon_details_stats_abbrev_xp
+        PokemonStatsType.Hp -> R.string.pokemon_details_stats_abbrev_hp
+        PokemonStatsType.Attack -> R.string.pokemon_details_stats_abbrev_attack
+        PokemonStatsType.Defense -> R.string.pokemon_details_stats_abbrev_defense
+        PokemonStatsType.SpecialAttack -> R.string.pokemon_details_stats_abbrev_special_attack
+        PokemonStatsType.SpecialDefense -> R.string.pokemon_details_stats_abbrev_special_defense
+        PokemonStatsType.Speed -> R.string.pokemon_details_stats_abbrev_speed
+    }
+}
+
+@Composable
+fun PokemonMoveList(
+    modifier: Modifier = Modifier,
+    uiState: PokemonDetailsUIState,
+) {
+    var isExpanded by remember { mutableStateOf(false) }
+    val transition = updateTransition(targetState = isExpanded)
+    val listHeight by transition.animateDp(
+        transitionSpec = { tween(durationMillis = 500) },
+        targetValueByState = { if (it) 300.dp else 40.dp }
+    )
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
+            .background(colorResource(R.color.light_down))
+            .height(listHeight)
+            .pointerInput(Unit) {
+                detectVerticalDragGestures { _, dragAmount ->
+                    isExpanded = dragAmount < 0 // Expand when swiped up
+                }
+            }
+    ) {
+        Text(
+            text = stringResource(R.string.pokemon_details_moves),
+            fontSize = 16.sp,
+            fontFamily = psFontFamily,
+            fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { isExpanded = !isExpanded }
+                )
+        )
+
+        AnimatedVisibility(
+            visible = isExpanded,
+            enter = expandVertically() + fadeIn(),
+        ) {
+            LazyColumn(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                uiState.pokemon.moves.forEach { move ->
+                    item {
+                        Text(
+                            text = move.moveName,
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Normal,
+                            fontFamily = psFontFamily,
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                                .background(Color.White, RoundedCornerShape(8.dp))
+                                .padding(8.dp)
+                        )
+                    }
+                }
+            }
+        }
     }
 }
