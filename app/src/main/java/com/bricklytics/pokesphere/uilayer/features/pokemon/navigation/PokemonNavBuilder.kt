@@ -8,6 +8,7 @@ import com.bricklytics.pokesphere.uilayer.base.navigation.AppRoutes
 import com.bricklytics.pokesphere.uilayer.base.navigation.appNavigationManager
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonUI
 import com.bricklytics.pokesphere.uilayer.features.pokemon.PokemonViewModel
+import com.bricklytics.pokesphere.uilayer.features.pokemondetails.navigation.pokemonDetailsNavigation
 
 fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
 
@@ -22,4 +23,6 @@ fun NavGraphBuilder.pokemonNavigation(navController: NavController) {
 
         PokemonUI(viewModel = viewModel)
     }
+
+    pokemonDetailsNavigation(navController)
 }
