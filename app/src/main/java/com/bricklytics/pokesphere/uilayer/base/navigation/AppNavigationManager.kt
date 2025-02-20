@@ -68,6 +68,9 @@ class AppNavigationManager {
             navOptions = navOptions {
                 launchSingleTop = _launchSingleTop
                 restoreState = _restoreState
+                popUpTo(appRoutes.route) {
+                    saveState = true
+                }
             }
         )
     }

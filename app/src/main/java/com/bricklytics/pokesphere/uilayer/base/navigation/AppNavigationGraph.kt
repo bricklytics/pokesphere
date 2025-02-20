@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.bricklytics.pokesphere.uilayer.features.home.navigation.homeNavigation
 import com.bricklytics.pokesphere.uilayer.features.pokemon.navigation.pokemonNavigation
-import com.bricklytics.pokesphere.uilayer.features.pokemondetails.navigation.pokemonDetailsNavigation
 
 class AppNavGraph {
 
@@ -18,7 +17,6 @@ class AppNavGraph {
             ) {
                 homeNavigation(navController)
                 pokemonNavigation(navController)
-                pokemonDetailsNavigation(navController)
             }
         }
     }
