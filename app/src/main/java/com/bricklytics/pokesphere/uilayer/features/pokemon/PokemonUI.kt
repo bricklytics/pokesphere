@@ -104,20 +104,11 @@ fun PokemonGridList(
     uiState: PokemonUIState,
     onEvent: (PokemonEvent) -> Unit,
 ) {
-    val lazyGridState = rememberLazyGridState(
-        initialFirstVisibleItemIndex = uiState.scrollPosition,
-        initialFirstVisibleItemScrollOffset = uiState.scrollOffset
-    )
+    val lazyGridState = rememberLazyGridState()
 
     LaunchedEffect(lazyGridState.canScrollForward) {
         if (!lazyGridState.canScrollForward && lazyGridState.canScrollBackward && !uiState.isLoading) {
             onEvent(PokemonEvent.OnDrainedList)
-        }
-    }
-
-    LaunchedEffect(uiState.scrollPosition, uiState.scrollOffset) {
-        if(uiState.scrollPosition > 0 || uiState.scrollOffset > 0) {
-            lazyGridState.scrollToItem(uiState.scrollPosition, uiState.scrollOffset)
         }
     }
 
