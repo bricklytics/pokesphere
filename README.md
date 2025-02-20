@@ -5,10 +5,13 @@ Created by Julio Martins as a demonstration of expertise in Android mobile softw
 
 <table align="right" border="none">  
     <tr>
-        <td> <img width=250px src="https://github.com/user-attachments/assets/01d7d118-1e3a-43a4-9ab2-f9a7b486f98d" /> </td>
+        <td> <img width=250px src="https://github.com/user-attachments/assets/7f563fa0-3e0c-4e73-bde0-1a0d7d92e2dd" /> </td>
     </tr>
     <tr>
-        <td> <img width=250px src="https://github.com/user-attachments/assets/22911f62-cb14-4584-8447-b81892d261d3" /> </td>
+        <td> <img width=250px src="https://github.com/user-attachments/assets/600a28d9-29d8-43ce-8960-64827914700d"/> </td>
+    </tr>
+    <tr>
+        <td> <img width=250px src="https://github.com/user-attachments/assets/2555b485-3bec-45bc-bc8f-221077ab5db4"/> </td>
     </tr>
 </table>
    
