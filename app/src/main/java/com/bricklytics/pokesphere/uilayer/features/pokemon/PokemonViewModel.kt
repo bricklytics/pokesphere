@@ -67,11 +67,19 @@ class PokemonViewModel @Inject constructor(
             }
 
             is PokemonEvent.OnLongPressCard -> {
-                setFavoritePokemon(event.index)
+                setFavoritePokemon(event.index, event.isFavorite)
             }
 
             is PokemonEvent.OnDoubleTapPokeCard -> {
-                uiState = uiState.copy(isShinny = event.isShinny)
+                val pokemon = uiState.pokemonList[event.index].copy(
+                    isShinny = event.isShinny
+                )
+
+                uiState = uiState.copy(
+                    pokemonList = uiState.pokemonList.apply {
+                        set(event.index, pokemon)
+                    }
+                )
             }
 
             is PokemonEvent.OnTapPokeCard -> {
@@ -92,7 +100,7 @@ class PokemonViewModel @Inject constructor(
                     "page" to uiState.page
                 )
             ).onSuccess { success ->
-                if(success.pokemonList.first().id == 0) {
+                if (success.pokemonList.first().id == 0) {
                     val names = success.pokemonList
                         .map { it.name }
                         .toMutableList()
@@ -114,12 +122,13 @@ class PokemonViewModel @Inject constructor(
     }
 
     @VisibleForTesting
-    fun setFavoritePokemon(index: Int) {
+    fun setFavoritePokemon(index: Int, isFavorite: Boolean) {
         viewModelScope.launch(dispatcher) {
             setFavoritePokemonUseCase.fetch(
                 args = mapOf(
                     "name" to uiState.pokemonList[index].name,
-                    "isShinny" to uiState.isShinny
+                    "isShinny" to uiState.pokemonList[index].isShinny,
+                    "isFavorite" to isFavorite
                 )
             ).onSuccess {
                 getPokemonList()
