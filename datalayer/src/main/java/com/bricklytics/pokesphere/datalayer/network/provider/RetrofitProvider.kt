@@ -4,6 +4,7 @@ import com.bricklytics.pokesphere.datalayer.BuildConfig.BASE_URL
 import com.bricklytics.pokesphere.datalayer.base.BaseApiServicesFacade
 import com.bricklytics.pokesphere.datalayer.network.error.NetworkErrorHandler
 import com.bricklytics.pokesphere.datalayer.network.interceptor.BaseHttpInterceptor
+import com.bricklytics.pokesphere.datalayer.network.interceptor.HttpLoggingInterceptor
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -17,6 +18,7 @@ object RetrofitProvider : BaseApiServicesFacade<Retrofit> {
     private fun provideOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
             .addInterceptor(BaseHttpInterceptor(errorHandler))
+            .addInterceptor(HttpLoggingInterceptor())
             .connectTimeout(60, TimeUnit.SECONDS)
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)

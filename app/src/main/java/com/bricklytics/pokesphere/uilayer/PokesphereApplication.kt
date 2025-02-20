@@ -13,6 +13,7 @@ class PokesphereApplication : Application() {
 
         if(BuildConfig.DEBUG){
             Timber.plant(Timber.DebugTree())
+            Timber.d("TimberInitializer is initialized.")
         }
     }
 }
