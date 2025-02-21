@@ -20,7 +20,7 @@ Created by Julio Martins as a demonstration of expertise in Android mobile softw
 - **Modern UI:** Jetpack Compose with Material 3
 - **Clean Architecture:** Modular design for scalability
 - **Reactive Programming:** Kotlin Coroutines for asynchronous operations
-- **Efficient Data Handling:** Room for local database, Retrofit & OkHttp for networking
+- **Efficient Data Handling:** Room for local database cache, Retrofit & OkHttp for networking
 - **Dependency Injection:** Dagger Hilt
 - **Media:** Glide for image loading
 - **Custom Icons:** FontAwesome Compose integration
@@ -33,7 +33,7 @@ Created by Julio Martins as a demonstration of expertise in Android mobile softw
 - FontAwesome Compose for icons
 
 ### **Architecture**
-- MVVM (Model-View-ViewModel)
+- MVVM (Model-View-ViewModel) / EDA (Event-Driven Archtecture)
 - Jetpack Lifecycle for managing UI lifecycle
 - AndroidX Core for enhanced functionality
 
